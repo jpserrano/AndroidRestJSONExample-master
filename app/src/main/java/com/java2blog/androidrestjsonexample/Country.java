@@ -3,6 +3,8 @@ public class Country{
     int id;
     String countryName;
 
+    public Country() {}
+
     public Country(int i, String countryName) {
         super();
         this.id = i;

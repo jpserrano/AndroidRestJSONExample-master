@@ -12,6 +12,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +28,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -48,19 +57,54 @@ public class MainActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             activity = this;
+
+
+            // Código original
             btnSubmit = (Button) findViewById(R.id.btnSubmit);
             listView = (ListView) findViewById(android.R.id.list);
             btnSubmit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    countries.clear();
+                    //countries.clear();
+
                     //Call WebService
-                    new GetServerData().execute();
+                    //new GetServerData().execute();
+
+                    if(countries != null && countries.size() > 0) {
+                        CustomCountryList customCountryList = new CustomCountryList(activity, countries);
+                        listView.setAdapter(customCountryList);
+                    }
+                }
+            });
+
+            // Nuevo código
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference();
+
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    GenericTypeIndicator<List<Country>> genericTypeIndicator = new GenericTypeIndicator<List<Country>>(){};
+                    List<Country> paises = dataSnapshot.getValue(genericTypeIndicator);
+
+                    if(paises != null) {
+                        for(Country c : paises) {
+                            countries.add(c);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w(TAG, "Failed to read value.", error.toException());
                 }
             });
         }
 
-        class GetServerData extends AsyncTask
+        /*class GetServerData extends AsyncTask
         {
 
             @Override
@@ -68,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 super.onPreExecute();
                 // Showing progress dialog
                 progressDialog = new ProgressDialog(MainActivity.this);
-                progressDialog.setMessage("Fetching conntry data");
+                progressDialog.setMessage("Fetching country data");
                 progressDialog.setCancelable(false);
                 progressDialog.show();
 
@@ -96,8 +140,9 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"You Selected "+countries.get(position).getCountryName()+ " as Country",Toast.LENGTH_SHORT).show();        }
                 });
             }
-        }
-        protected Void getWebServiceResponseData() {
+        }*/
+
+        /*protected Void getWebServiceResponseData() {
 
             try {
 
@@ -147,5 +192,5 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 return null;
-            }
+            }*/
     }
