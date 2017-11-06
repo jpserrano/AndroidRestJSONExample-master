@@ -8,19 +8,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="10dp"
-    tools:context="com.java2blog.androidrestjsonexample.MainActivity">
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Fetching countries data"
-        android:id="@+id/btnSubmit"
-        />
+    tools:context="es.jota.detemporada.MainActivity">
 
     <ListView
         android:id="@+id/android:list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnSubmit"
-        />
+        android:layout_height="wrap_content" />
 </RelativeLayout>
