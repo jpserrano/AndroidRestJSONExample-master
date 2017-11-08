@@ -10,8 +10,29 @@
     android:paddingTop="10dp"
     tools:context="es.jota.detemporada.MainActivity">
 
+    <Button
+        android:id="@+id/boton_mes_menos"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="Menos" />
+
+    <TextView
+        android:id="@+id/texto_mes"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/boton_mes_mas"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Más" />
+
     <ListView
         android:id="@+id/android:list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/boton_mes_mas" />
 </RelativeLayout>
