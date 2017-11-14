@@ -16,12 +16,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -65,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 modificarTextoMesActual();
-                obtenerAlimentosPais();
+                ordenarAlimentos();
+                mostrarAlimentos();
             }
         });
 
@@ -79,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 modificarTextoMesActual();
-                obtenerAlimentosPais();
+                ordenarAlimentos();
+                mostrarAlimentos();
             }
         });
     }
@@ -98,21 +101,38 @@ public class MainActivity extends AppCompatActivity {
      * Obtiene de BD el listado de alimentos del pais actual ordenados por calidad en el mes que nos encontramos.
      */
     private void obtenerAlimentosPais() {
-        final String mesFormateado = formatearMesSeleccionado();
-
-        coleccionAlimentosPais.orderBy("mes" + mesFormateado, Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        coleccionAlimentosPais.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                 alimentos.clear();
 
                 if(task.isSuccessful()) {
+                    // Formar la lista de alimentos
+                    // TODO Buscar alguna forma de hacerlo sin el for
                     for(DocumentSnapshot document : task.getResult()) {
-                        Alimento alimento = new Alimento(((Long)document.get("mes" + mesFormateado)).intValue(), (String)document.get("nombre"));
+                        Alimento alimento = new Alimento(1, (String)document.get("nombre"));
+                        alimento.setMes01(((Long)document.get("mes01")).intValue());
+                        alimento.setMes02(((Long)document.get("mes02")).intValue());
+                        alimento.setMes03(((Long)document.get("mes03")).intValue());
+                        alimento.setMes04(((Long)document.get("mes04")).intValue());
+                        alimento.setMes05(((Long)document.get("mes05")).intValue());
+                        alimento.setMes06(((Long)document.get("mes06")).intValue());
+                        alimento.setMes07(((Long)document.get("mes07")).intValue());
+                        alimento.setMes08(((Long)document.get("mes08")).intValue());
+                        alimento.setMes09(((Long)document.get("mes09")).intValue());
+                        alimento.setMes10(((Long)document.get("mes10")).intValue());
+                        alimento.setMes11(((Long)document.get("mes11")).intValue());
+                        alimento.setMes12(((Long)document.get("mes12")).intValue());
+
                         alimentos.add(alimento);
 
-                        ListaAlimentos listaAlimentos = new ListaAlimentos(activity, alimentos);
-                        listView.setAdapter(listaAlimentos);
+                        if(alimentos == null || alimentos.size() == 0) {
+                            System.out.println("### ERROR: la lista está vacía al final de la consulta");
+                        }
+
+                        ordenarAlimentos();
+                        mostrarAlimentos();
                     }
                 } else {
                     System.out.println("### ERROR OBTENIENDO LA COLECCIÓN!! : " + task.getException());
@@ -121,22 +141,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Devuelve un string con el mes seleccionado en formato dos caracteres, añadiendo un 0 en los meses inferiores al 10.
-     * Esto se hace porque en la BD los campos de calidades del mes son del estilo mes01, mes02...
-     *
-     * @return String con el mes formateado.
-     */
-    private String formatearMesSeleccionado() {
-        String resultado = "";
-
-        if(mesSeleccionado >= 10) {
-            resultado = mesSeleccionado + "";
+    private void ordenarAlimentos() {
+        if(alimentos == null || alimentos.size() == 0) {
+            System.out.println("### ERROR: la lista está vacía antes de ordenarla");
         } else {
-            resultado = "0" + mesSeleccionado;
+            Comparator<Alimento> comparador = Alimento.getComparator(mesSeleccionado);
+            Collections.sort(alimentos, comparador);
         }
+    }
 
-        return resultado;
+    private void mostrarAlimentos() {
+        if(alimentos == null || alimentos.size() == 0) {
+            System.out.println("### ERROR: la lista está vacía antes de mostrarla");
+        } else {
+            ListaAlimentos listaAlimentos = new ListaAlimentos(activity, alimentos);
+            listView.setAdapter(listaAlimentos);
+        }
     }
 
     /**
