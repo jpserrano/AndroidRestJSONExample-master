@@ -1,33 +1,33 @@
 package es.jota.detemporada;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
     Activity activity;
+    CollectionReference coleccionAlimentosPais;
     ArrayList<Alimento> alimentos = new ArrayList<>();
     ListView listView;
 
@@ -45,35 +45,14 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(android.R.id.list);
 
-        /*FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("alimentos");*/
+        // Obtener el país del usuario
+        TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        String countryCodeValue = tm.getNetworkCountryIso().toUpperCase();
 
         // Access a Cloud Firestore instance from your Activity
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                alimentos.clear();
-
-                // This method is called once with the initial value and again whenever data at this location is updated.
-                GenericTypeIndicator<List<Alimento>> genericTypeIndicator = new GenericTypeIndicator<List<Alimento>>(){};
-                List<Alimento> alimentosTmp = dataSnapshot.getValue(genericTypeIndicator);
-
-                if(alimentosTmp != null) {
-                    alimentos.addAll(alimentosTmp);
-
-                    ListaAlimentos listaAlimentos = new ListaAlimentos(activity, alimentos);
-                    listView.setAdapter(listaAlimentos);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        coleccionAlimentosPais = database.collection("alimentos_" + countryCodeValue);
+        obtenerAlimentosPais();
 
         // Gestión de los botones atrás/alante para cambiar de mes
         final Button botonMesMenos = (Button)findViewById(R.id.boton_mes_menos);
@@ -86,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 modificarTextoMesActual();
+                obtenerAlimentosPais();
             }
         });
 
@@ -99,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 modificarTextoMesActual();
+                obtenerAlimentosPais();
             }
         });
     }
@@ -113,6 +94,54 @@ public class MainActivity extends AppCompatActivity {
         return Integer.parseInt(dateFormat.format(new Date()));
     }
 
+    /**
+     * Obtiene de BD el listado de alimentos del pais actual ordenados por calidad en el mes que nos encontramos.
+     */
+    private void obtenerAlimentosPais() {
+        final String mesFormateado = formatearMesSeleccionado();
+
+        coleccionAlimentosPais.orderBy("mes" + mesFormateado, Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                alimentos.clear();
+
+                if(task.isSuccessful()) {
+                    for(DocumentSnapshot document : task.getResult()) {
+                        Alimento alimento = new Alimento(((Long)document.get("mes" + mesFormateado)).intValue(), (String)document.get("nombre"));
+                        alimentos.add(alimento);
+
+                        ListaAlimentos listaAlimentos = new ListaAlimentos(activity, alimentos);
+                        listView.setAdapter(listaAlimentos);
+                    }
+                } else {
+                    System.out.println("### ERROR OBTENIENDO LA COLECCIÓN!! : " + task.getException());
+                }
+            }
+        });
+    }
+
+    /**
+     * Devuelve un string con el mes seleccionado en formato dos caracteres, añadiendo un 0 en los meses inferiores al 10.
+     * Esto se hace porque en la BD los campos de calidades del mes son del estilo mes01, mes02...
+     *
+     * @return String con el mes formateado.
+     */
+    private String formatearMesSeleccionado() {
+        String resultado = "";
+
+        if(mesSeleccionado >= 10) {
+            resultado = mesSeleccionado + "";
+        } else {
+            resultado = "0" + mesSeleccionado;
+        }
+
+        return resultado;
+    }
+
+    /**
+     * Modifica el mes que se muestra en pantalla.
+     */
     private void modificarTextoMesActual() {
         final TextView textViewToChange = (TextView) findViewById(R.id.texto_mes);
 
