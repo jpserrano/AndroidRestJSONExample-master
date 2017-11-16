@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">De Temporada</string>
+
+    <!-- Meses -->
     <string name="enero">Enero</string>
     <string name="febrero">Febrero</string>
     <string name="marzo">Marzo</string>
@@ -12,4 +14,10 @@
     <string name="octubre">Octubre</string>
     <string name="noviembre">Noviembre</string>
     <string name="diciembre">Diciembre</string>
+
+    <!-- Alimentos -->
+    <string name="aguacate">Aguacate</string>
+    <string name="kiwi">Kiwi</string>
+    <string name="limon">Limón</string>
+    <string name="pera">Pera</string>
 </resources>

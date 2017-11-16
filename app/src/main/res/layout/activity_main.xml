@@ -7,32 +7,56 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="10dp"
+    android:paddingTop="8dp"
+    android:background="@color/background"
     tools:context="es.jota.detemporada.MainActivity">
 
-    <Button
-        android:id="@+id/boton_mes_menos"
-        android:layout_height="wrap_content"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:text="Menos" />
-
-    <TextView
-        android:id="@+id/texto_mes"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true" />
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="8dp"
+        android:id="@+id/linearLayout">
 
-    <Button
-        android:id="@+id/boton_mes_mas"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="Más" />
+        <Button
+            android:id="@+id/boton_mes_menos"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="&lt;" />
 
-    <ListView
-        android:id="@+id/android:list"
+        <TextView
+            android:id="@+id/texto_mes"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:gravity="center_horizontal"
+            android:minWidth="128dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/boton_mes_mas"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="&gt;" />
+
+    </LinearLayout>
+
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gridview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/boton_mes_mas" />
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout"
+        android:columnWidth="128dp"
+        android:gravity="center"
+        android:horizontalSpacing="10dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp" />
+
 </RelativeLayout>

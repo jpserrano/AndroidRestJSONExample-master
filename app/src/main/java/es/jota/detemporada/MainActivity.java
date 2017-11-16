@@ -2,14 +2,17 @@ package es.jota.detemporada;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,11 +30,13 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String EXTRA_ALIMENTO_SELECCIONADO = "es.jota.detemporada.ALIMENTOSELECCIONADO";
+    public static final String EXTRA_MES_SELECCIONADO = "es.jota.detemporada.MESELECCIONADO";
+
     Activity activity;
     CollectionReference coleccionAlimentosPais;
     ArrayList<Alimento> alimentos = new ArrayList<>();
-    ListView listView;
-
+    GridView gridview;
     int mesSeleccionado;
 
     @Override
@@ -44,13 +49,26 @@ public class MainActivity extends AppCompatActivity {
         mesSeleccionado = calcularMesActual();
         modificarTextoMesActual();
 
-        listView = (ListView) findViewById(android.R.id.list);
+        /*************************/
+
+        gridview = (GridView) findViewById(R.id.gridview);
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, AlimentoActivity.class);
+                intent.putExtra(EXTRA_ALIMENTO_SELECCIONADO, alimentos.get(position));
+                intent.putExtra(EXTRA_MES_SELECCIONADO, mesSeleccionado);
+                startActivity(intent);
+            }
+        });
+
+        /*************************/
 
         // Obtener el país del usuario
         TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String countryCodeValue = tm.getNetworkCountryIso().toUpperCase();
 
-        // Access a Cloud Firestore instance from your Activity
+        // Acceso a la BD de Cloud Firestore
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         coleccionAlimentosPais = database.collection("alimentos_" + countryCodeValue);
         obtenerAlimentosPais();
@@ -111,30 +129,14 @@ public class MainActivity extends AppCompatActivity {
                     // Formar la lista de alimentos
                     // TODO Buscar alguna forma de hacerlo sin el for
                     for(DocumentSnapshot document : task.getResult()) {
-                        Alimento alimento = new Alimento(1, (String)document.get("nombre"));
-                        alimento.setMes01(((Long)document.get("mes01")).intValue());
-                        alimento.setMes02(((Long)document.get("mes02")).intValue());
-                        alimento.setMes03(((Long)document.get("mes03")).intValue());
-                        alimento.setMes04(((Long)document.get("mes04")).intValue());
-                        alimento.setMes05(((Long)document.get("mes05")).intValue());
-                        alimento.setMes06(((Long)document.get("mes06")).intValue());
-                        alimento.setMes07(((Long)document.get("mes07")).intValue());
-                        alimento.setMes08(((Long)document.get("mes08")).intValue());
-                        alimento.setMes09(((Long)document.get("mes09")).intValue());
-                        alimento.setMes10(((Long)document.get("mes10")).intValue());
-                        alimento.setMes11(((Long)document.get("mes11")).intValue());
-                        alimento.setMes12(((Long)document.get("mes12")).intValue());
-
+                        Alimento alimento = new Alimento((String)document.get("nombre"), (ArrayList<Long>) document.get("calidades"));
                         alimentos.add(alimento);
-
-                        if(alimentos == null || alimentos.size() == 0) {
-                            System.out.println("### ERROR: la lista está vacía al final de la consulta");
-                        }
 
                         ordenarAlimentos();
                         mostrarAlimentos();
                     }
                 } else {
+                    // TODO tratar excepción
                     System.out.println("### ERROR OBTENIENDO LA COLECCIÓN!! : " + task.getException());
                 }
             }
@@ -142,21 +144,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ordenarAlimentos() {
-        if(alimentos == null || alimentos.size() == 0) {
-            System.out.println("### ERROR: la lista está vacía antes de ordenarla");
-        } else {
-            Comparator<Alimento> comparador = Alimento.getComparator(mesSeleccionado);
-            Collections.sort(alimentos, comparador);
-        }
+        Comparator<Alimento> comparador = Alimento.getComparator(mesSeleccionado);
+        Collections.sort(alimentos, comparador);
     }
 
     private void mostrarAlimentos() {
-        if(alimentos == null || alimentos.size() == 0) {
-            System.out.println("### ERROR: la lista está vacía antes de mostrarla");
-        } else {
-            ListaAlimentos listaAlimentos = new ListaAlimentos(activity, alimentos);
-            listView.setAdapter(listaAlimentos);
-        }
+        ListaAlimentos listaAlimentos = new ListaAlimentos(activity, alimentos, mesSeleccionado);
+        gridview.setAdapter(listaAlimentos);
     }
 
     /**
@@ -209,4 +203,3 @@ public class MainActivity extends AppCompatActivity {
     public void setMesSeleccionado(int mesSeleccionado) { this.mesSeleccionado = mesSeleccionado; }
 
 }
-

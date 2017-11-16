@@ -5,26 +5,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class ListaAlimentos extends BaseAdapter {
 
-
     private Activity context;
     private ArrayList<Alimento> alimentos;
+    int mesSeleccionado;
 
-
-    public ListaAlimentos(Activity context, ArrayList<Alimento> alimentos) {
+    public ListaAlimentos(Activity context, ArrayList<Alimento> alimentos, int mesSeleccionado) {
         this.context = context;
         this.alimentos = alimentos;
-
+        this.mesSeleccionado = mesSeleccionado;
     }
 
     public static class ViewHolder {
-        TextView textViewId;
+        ImageView imageView;
         TextView textViewNombre;
+        RatingBar ratingBar;
     }
 
     @Override
@@ -36,16 +38,35 @@ public class ListaAlimentos extends BaseAdapter {
         if(convertView == null) {
             vh = new ViewHolder();
             row = inflater.inflate(R.layout.row_item, null, true);
-            vh.textViewId = (TextView) row.findViewById(R.id.textViewId);
+            vh.imageView = (ImageView) row.findViewById(R.id.imageView);
             vh.textViewNombre = (TextView) row.findViewById(R.id.textViewNombre);
-            // store the holder with the view.
+            vh.ratingBar = (RatingBar) row.findViewById(R.id.ratingBar);
             row.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
 
-        vh.textViewNombre.setText(alimentos.get(position).getNombre());
-        vh.textViewId.setText("" + alimentos.get(position).getId());
+        String nombreAlimento = alimentos.get(position).getNombre();
+
+        // Si en el strings no está definido el nombre del alimento mostramos el nombre desde el objeto en BD
+        int recursoNombre = context.getResources().getIdentifier(nombreAlimento, "string", context.getPackageName());
+        if(recursoNombre == 0) {
+            vh.textViewNombre.setText(nombreAlimento);
+            // TODO mostrar un log de error, aunque se pille el nombre de BD hay que dejar constancia para corregirlo
+        } else {
+            vh.textViewNombre.setText(recursoNombre);
+        }
+
+        vh.ratingBar.setRating((alimentos.get(position).getCalidades().get(mesSeleccionado - 1)) / 2);
+
+        // Si no existe la imagen del alimento mostramos una imagen genérica para que la interfaz no se descuadre
+        int recursoImagen = context.getResources().getIdentifier("img_" + nombreAlimento, "drawable", context.getPackageName());
+        if(recursoImagen == 0) {
+            vh.imageView.setImageResource(R.drawable.img_no_foto);
+            // TODO mostrar un log para solucionar el problema
+        } else {
+            vh.imageView.setImageResource(recursoImagen);
+        }
 
         return  row;
     }
@@ -67,4 +88,3 @@ public class ListaAlimentos extends BaseAdapter {
         return alimentos.size();
     }
 }
-
