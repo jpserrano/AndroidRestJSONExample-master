@@ -46,6 +46,7 @@ public class ListaAlimentos extends BaseAdapter {
             vh = (ViewHolder) convertView.getTag();
         }
 
+        // TODO Controlar si la lista de alimentos es null, por ejemplo cuando no se recuperan los datos de la BD
         String nombreAlimento = alimentos.get(position).getNombre();
 
         // Si en el strings no está definido el nombre del alimento mostramos el nombre desde el objeto en BD

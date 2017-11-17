@@ -14,19 +14,30 @@ public class AlimentoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alimento);
 
-        // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
         Alimento alimentoSeleccionado = (Alimento) intent.getSerializableExtra(MainActivity.EXTRA_ALIMENTO_SELECCIONADO);
+        // TODO El mes seleccionado se usará para marcarlo en el panel de calidades por mes
         int mesSeleccionado = intent.getIntExtra(MainActivity.EXTRA_MES_SELECCIONADO, 1);
 
-        // Capture the layout's TextView and set the string as its text
+
+        // Si en el strings no está definido el nombre del alimento mostramos el nombre desde el objeto en BD
         TextView textAlimento = (TextView) findViewById(R.id.texto_alimento);
-        textAlimento.setText(alimentoSeleccionado.getNombre());
+        int recursoNombre = AlimentoActivity.this.getResources().getIdentifier(alimentoSeleccionado.getNombre(), "string", AlimentoActivity.this.getPackageName());
+        if(recursoNombre == 0) {
+            textAlimento.setText(alimentoSeleccionado.getNombre());
+            // TODO mostrar un log de error, aunque se pille el nombre de BD hay que dejar constancia para corregirlo
+        } else {
+            textAlimento.setText(recursoNombre);
+        }
 
-        TextView textMes = (TextView) findViewById(R.id.texto_mes);
-        textMes.setText(mesSeleccionado + "");
-
+        // Si no existe la imagen del alimento mostramos una imagen genérica para que la interfaz no se descuadre
         ImageView imagenAlimento = (ImageView) findViewById(R.id.imagen_alimento);
-        imagenAlimento.setImageResource(Resources.getSystem().getIdentifier("img_" + alimentoSeleccionado.getNombre(), "drawable", this.getPackageName()));
+        int recursoImagen = AlimentoActivity.this.getResources().getIdentifier("img_" + alimentoSeleccionado.getNombre(), "drawable", AlimentoActivity.this.getPackageName());
+        if(recursoImagen == 0) {
+            imagenAlimento.setImageResource(R.drawable.img_no_foto);
+            // TODO mostrar un log para solucionar el problema
+        } else {
+            imagenAlimento.setImageResource(recursoImagen);
+        }
     }
 }

@@ -18,6 +18,10 @@
     <!-- Alimentos -->
     <string name="aguacate">Aguacate</string>
     <string name="kiwi">Kiwi</string>
+    <string name="lima">Lima</string>
     <string name="limon">Limón</string>
+    <string name="mandarina">Mandarina</string>
+    <string name="manzana">Manzana</string>
+    <string name="naranja">Naranja</string>
     <string name="pera">Pera</string>
 </resources>
