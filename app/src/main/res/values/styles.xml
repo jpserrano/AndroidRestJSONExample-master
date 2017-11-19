@@ -16,4 +16,12 @@
         <item name="colorPrimary">#333</item>
         <item name="android:textSize">20dp</item>
     </style>
+
+    <style name="textoPropiedadAlimento">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingTop">16dp</item>
+    </style>
+    <style name="propiedadAlimento">
+        <item name="android:textSize">20dp</item>
+    </style>
 </resources>

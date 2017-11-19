@@ -10,11 +10,11 @@
     android:orientation="vertical">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center_horizontal"
-        style="@style/card">
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imagen_alimento"
@@ -24,10 +24,80 @@
 
         <TextView
             android:id="@+id/texto_alimento"
-            android:layout_height="wrap_content"
+            style="@style/nombreAlimento"
             android:layout_width="wrap_content"
-            android:layout_centerHorizontal="true"
-            style="@style/nombreAlimento" />
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/texto_calorias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/calorias"
+                style="@style/textoPropiedadAlimento" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/carbohidratos"
+                style="@style/textoPropiedadAlimento" />
+
+            <TextView
+                android:id="@+id/valor_calorias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/texto_calorias"
+                style="@style/propiedadAlimento" />
+
+            <TextView
+                android:id="@+id/valor_carbohidratos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/texto_calorias"
+                style="@style/propiedadAlimento" />
+
+            <TextView
+                android:id="@+id/texto_proteinas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/valor_calorias"
+                android:text="@string/proteinas"
+                style="@style/textoPropiedadAlimento" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/valor_calorias"
+                android:text="@string/grasas"
+                style="@style/textoPropiedadAlimento" />
+
+            <TextView
+                android:id="@+id/valor_proteinas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/texto_proteinas"
+                style="@style/propiedadAlimento" />
+
+            <TextView
+                android:id="@+id/valor_grasas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/texto_proteinas"
+                style="@style/propiedadAlimento" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

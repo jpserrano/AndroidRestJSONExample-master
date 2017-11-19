@@ -25,4 +25,9 @@
     <string name="naranja">Naranja</string>
     <string name="pera">Pera</string>
 
+    <!-- Propiedades del alimento -->
+    <string name="calorias">Calorías</string>
+    <string name="carbohidratos">Carbohidratos</string>
+    <string name="proteinas">Proteínas</string>
+    <string name="grasas">Grasas</string>
 </resources>
