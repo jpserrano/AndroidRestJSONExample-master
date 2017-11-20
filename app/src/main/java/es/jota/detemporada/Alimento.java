@@ -6,18 +6,13 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Alimento implements Serializable {
-    String nombre;
-    List<Long> calidades;
+
+    private String nombre;
+    private List<Long> calidades;
 
     public Alimento() {}
 
-    public Alimento(String nombre, ArrayList<Long> calidades) {
-        super();
-        this.nombre = nombre;
-        this.calidades = calidades;
-    }
-
-    public static Comparator<Alimento> getComparator(int mesComparacion) {
+    static Comparator<Alimento> getComparator(int mesComparacion) {
         return new AlimentoComparator(mesComparacion);
     }
 
@@ -48,13 +43,11 @@ public class Alimento implements Serializable {
         }
     }
 
-    public String getNombre() {
-        return nombre;
-    }
+    String getNombre() { return nombre; }
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public List<Long> getCalidades() { return calidades; }
+    List<Long> getCalidades() { return calidades; }
     public void setCalidades(List<Long> calidades) { this.calidades = calidades; }
 }

@@ -2,18 +2,18 @@
     <string name="app_name">De Temporada</string>
 
     <!-- Meses -->
-    <string name="enero">Enero</string>
-    <string name="febrero">Febrero</string>
-    <string name="marzo">Marzo</string>
-    <string name="abril">Abril</string>
-    <string name="mayo">Mayo</string>
-    <string name="junio">Junio</string>
-    <string name="julio">Julio</string>
-    <string name="agosto">Agosto</string>
-    <string name="septiembre">Septiembre</string>
-    <string name="octubre">Octubre</string>
-    <string name="noviembre">Noviembre</string>
-    <string name="diciembre">Diciembre</string>
+    <string name="mes_1">Enero</string>
+    <string name="mes_2">Febrero</string>
+    <string name="mes_3">Marzo</string>
+    <string name="mes_4">Abril</string>
+    <string name="mes_5">Mayo</string>
+    <string name="mes_6">Junio</string>
+    <string name="mes_7">Julio</string>
+    <string name="mes_8">Agosto</string>
+    <string name="mes_9">Septiembre</string>
+    <string name="mes_10">Octubre</string>
+    <string name="mes_11">Noviembre</string>
+    <string name="mes_12">Diciembre</string>
 
     <!-- Alimentos -->
     <string name="aguacate">Aguacate</string>

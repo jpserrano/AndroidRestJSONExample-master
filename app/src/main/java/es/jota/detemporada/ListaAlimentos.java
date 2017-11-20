@@ -1,6 +1,7 @@
 package es.jota.detemporada;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,13 @@ import java.util.ArrayList;
 
 public class ListaAlimentos extends BaseAdapter {
 
+    private static final String TAG = ListaAlimentos.class.getName();
+
     private Activity context;
     private ArrayList<Alimento> alimentos;
-    int mesSeleccionado;
+    private int mesSeleccionado;
 
-    public ListaAlimentos(Activity context, ArrayList<Alimento> alimentos, int mesSeleccionado) {
+    ListaAlimentos(Activity context, ArrayList<Alimento> alimentos, int mesSeleccionado) {
         this.context = context;
         this.alimentos = alimentos;
         this.mesSeleccionado = mesSeleccionado;
@@ -37,7 +40,7 @@ public class ListaAlimentos extends BaseAdapter {
         ViewHolder vh;
         if(convertView == null) {
             vh = new ViewHolder();
-            row = inflater.inflate(R.layout.row_item, null, true);
+            row = inflater.inflate(R.layout.row_item, parent, false);
             vh.imageView = (ImageView) row.findViewById(R.id.imageView);
             vh.textViewNombre = (TextView) row.findViewById(R.id.textViewNombre);
             vh.ratingBar = (RatingBar) row.findViewById(R.id.ratingBar);
@@ -46,14 +49,13 @@ public class ListaAlimentos extends BaseAdapter {
             vh = (ViewHolder) convertView.getTag();
         }
 
-        // TODO Controlar si la lista de alimentos es null, por ejemplo cuando no se recuperan los datos de la BD
         String nombreAlimento = alimentos.get(position).getNombre();
 
         // Si en el strings no está definido el nombre del alimento mostramos el nombre desde el objeto en BD
         int recursoNombre = context.getResources().getIdentifier(nombreAlimento, "string", context.getPackageName());
         if(recursoNombre == 0) {
             vh.textViewNombre.setText(nombreAlimento);
-            // TODO mostrar un log de error, aunque se pille el nombre de BD hay que dejar constancia para corregirlo
+            Log.w(TAG, "getView: el alimento '" + nombreAlimento + "' no está definido en el fichero string");
         } else {
             vh.textViewNombre.setText(recursoNombre);
         }
@@ -64,7 +66,7 @@ public class ListaAlimentos extends BaseAdapter {
         int recursoImagen = context.getResources().getIdentifier("img_" + nombreAlimento, "drawable", context.getPackageName());
         if(recursoImagen == 0) {
             vh.imageView.setImageResource(R.drawable.img_no_foto);
-            // TODO mostrar un log para solucionar el problema
+            Log.w(TAG, "getView: el alimento '" + nombreAlimento + "' no no tiene la imagen asociada");
         } else {
             vh.imageView.setImageResource(recursoImagen);
         }

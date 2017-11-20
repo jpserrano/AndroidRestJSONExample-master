@@ -1,5 +1,6 @@
 package es.jota.detemporada;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
@@ -17,6 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AlimentoActivity extends AppCompatActivity {
 
+    private static final String TAG = AlimentoActivity.class.getName();
+
     private String nombreAlimento;
     private AlimentoGlobal alimentoGlobal;
 
@@ -33,13 +36,12 @@ public class AlimentoActivity extends AppCompatActivity {
         // TODO El mes seleccionado se usará para marcarlo en el panel de calidades por mes
         int mesSeleccionado = intent.getIntExtra(MainActivity.EXTRA_MES_SELECCIONADO, 1);
 
-
         // Si en el strings no está definido el nombre del alimento mostramos el nombre desde el objeto en BD
         TextView textAlimento = (TextView) findViewById(R.id.texto_alimento);
         int recursoNombre = AlimentoActivity.this.getResources().getIdentifier(alimentoSeleccionado.getNombre(), "string", AlimentoActivity.this.getPackageName());
         if(recursoNombre == 0) {
             textAlimento.setText(alimentoSeleccionado.getNombre());
-            // TODO mostrar un log de error, aunque se pille el nombre de BD hay que dejar constancia para corregirlo
+            Log.w(TAG, "onCreate: el alimento '" + alimentoSeleccionado.getNombre() + "' no está definido en el fichero string");
         } else {
             textAlimento.setText(recursoNombre);
         }
@@ -49,7 +51,7 @@ public class AlimentoActivity extends AppCompatActivity {
         int recursoImagen = AlimentoActivity.this.getResources().getIdentifier("img_" + alimentoSeleccionado.getNombre(), "drawable", AlimentoActivity.this.getPackageName());
         if(recursoImagen == 0) {
             imagenAlimento.setImageResource(R.drawable.img_no_foto);
-            // TODO mostrar un log para solucionar el problema
+            Log.w(TAG, "onCreate: el alimento '" + alimentoSeleccionado.getNombre() + "' no tiene la imagen asociada");
         } else {
             imagenAlimento.setImageResource(recursoImagen);
         }
@@ -57,6 +59,9 @@ public class AlimentoActivity extends AppCompatActivity {
         obtenerDatosGlobalesAlimento();
     }
 
+    /**
+     * Recupera de la BD los datos globales del alimento.
+     */
     private void obtenerDatosGlobalesAlimento() {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         DocumentReference docRef = database.collection("alimentos").document(nombreAlimento);
@@ -64,34 +69,31 @@ public class AlimentoActivity extends AppCompatActivity {
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-                        alimentoGlobal = new AlimentoGlobal((String)document.get("nombre"));
-                        alimentoGlobal.setCalorias((Long)document.get("val_calorias"));
-                        alimentoGlobal.setCarbohidratos((Double)document.get("val_carbohidratos"));
-                        alimentoGlobal.setProteinas((Double)document.get("val_proteinas"));
-                        alimentoGlobal.setGrasas((Double)document.get("val_grasas"));
-
-                        establecerDatosEnVista();
-                    } else {
-                        // TODO no se encuentra el documento, meter log
-                        System.out.println("### ERROR 1");
-                    }
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document != null) {
+                    alimentoGlobal = document.toObject(AlimentoGlobal.class);
+                    establecerDatosEnVista();
                 } else {
-                    // TODO no se puede leer el documento, meter log
-                    System.out.println("### ERROR 2");
+                    Log.w(TAG, "obtenerDatosGlobalesAlimento: el documento asociado a '" + nombreAlimento + "' es nulo");
                 }
+            } else {
+                Log.w(TAG, "obtenerDatosGlobalesAlimento: error al obtener el documento '" + nombreAlimento + "'");
+            }
             }
         });
     }
 
+    /**
+     * Muestra en la vista los valores nutricionales obtenidos de BD.
+     */
+    @SuppressLint("SetTextI18n")
     private void establecerDatosEnVista() {
         if(alimentoGlobal != null) {
-            ((TextView) findViewById(R.id.valor_calorias)).setText(alimentoGlobal.getCalorias() + " kcal");
-            ((TextView) findViewById(R.id.valor_carbohidratos)).setText(alimentoGlobal.getCarbohidratos() + " gr");
-            ((TextView) findViewById(R.id.valor_proteinas)).setText(alimentoGlobal.getProteinas() + " gr");
-            ((TextView) findViewById(R.id.valor_grasas)).setText(alimentoGlobal.getGrasas() + " gr");
+            ((TextView) findViewById(R.id.valor_calorias)).setText(String.valueOf(alimentoGlobal.getCalorias()) + " kcal");
+            ((TextView) findViewById(R.id.valor_carbohidratos)).setText(String.valueOf(alimentoGlobal.getCarbohidratos()) + " gr");
+            ((TextView) findViewById(R.id.valor_proteinas)).setText(String.valueOf(alimentoGlobal.getProteinas()) + " gr");
+            ((TextView) findViewById(R.id.valor_grasas)).setText(String.valueOf(alimentoGlobal.getGrasas()) + " gr");
         }
     }
 }
