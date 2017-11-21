@@ -3,10 +3,14 @@ package es.jota.detemporada;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,23 +42,27 @@ public class AlimentoActivity extends AppCompatActivity {
         int mesSeleccionado = intent.getIntExtra(MainActivity.EXTRA_MES_SELECCIONADO, 1);
 
         // Si en el strings no está definido el nombre del alimento mostramos el nombre desde el objeto en BD
-        TextView textAlimento = (TextView) findViewById(R.id.texto_alimento);
         int recursoNombre = AlimentoActivity.this.getResources().getIdentifier(alimentoSeleccionado.getNombre(), "string", AlimentoActivity.this.getPackageName());
         if(recursoNombre == 0) {
-            textAlimento.setText(alimentoSeleccionado.getNombre());
+            setTitle(alimentoSeleccionado.getNombre());
             Log.w(TAG, "onCreate: el alimento '" + alimentoSeleccionado.getNombre() + "' no está definido en el fichero string");
         } else {
-            textAlimento.setText(recursoNombre);
+            setTitle(recursoNombre);
         }
 
         // Si no existe la imagen del alimento mostramos una imagen genérica para que la interfaz no se descuadre
-        ImageView imagenAlimento = (ImageView) findViewById(R.id.imagen_alimento);
         int recursoImagen = AlimentoActivity.this.getResources().getIdentifier("img_" + alimentoSeleccionado.getNombre(), "drawable", AlimentoActivity.this.getPackageName());
         if(recursoImagen == 0) {
-            imagenAlimento.setImageResource(R.drawable.img_no_foto);
+            getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.img_no_foto));
             Log.w(TAG, "onCreate: el alimento '" + alimentoSeleccionado.getNombre() + "' no tiene la imagen asociada");
         } else {
-            imagenAlimento.setImageResource(recursoImagen);
+            getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(recursoImagen, null));
+        }
+
+        // TODO mirar si se puede utilizar algo de ContextCompat
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
         obtenerDatosGlobalesAlimento();

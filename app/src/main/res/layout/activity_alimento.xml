@@ -16,19 +16,6 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imagen_alimento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true" />
-
-        <TextView
-            android:id="@+id/texto_alimento"
-            style="@style/nombreAlimento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
