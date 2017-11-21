@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:gravity="center_horizontal"
             android:minWidth="128dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:layout_centerHorizontal="true" />
 
@@ -54,8 +54,8 @@
         android:layout_below="@+id/linearLayout"
         android:columnWidth="128dp"
         android:gravity="center"
-        android:horizontalSpacing="10dp"
-        android:verticalSpacing="10dp"
+        android:horizontalSpacing="8dp"
+        android:verticalSpacing="8dp"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth" />
 
