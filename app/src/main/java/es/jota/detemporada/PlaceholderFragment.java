@@ -1,6 +1,5 @@
 package es.jota.detemporada;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,17 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
 
-import java.lang.reflect.Array;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -54,13 +47,24 @@ public class PlaceholderFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Crea cada una de las páginas.
+     * Se llama con la página inicial, creando esa, la anterior y posterior.
+     * Cuando nos desplazamos a la izquierda crea la anterior.
+     * Cuando nos desplazamos a la derecha crea la posterior.
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_alimentos, container, false);
         mesSeleccionado = getArguments().getInt(ARG_SECTION_NUMBER);
         alimentos = (ArrayList<Alimento>)getArguments().getSerializable(ARG_ALIMENTOS);
 
-        System.out.println("### onCreateView");
+        System.out.println("### onCreateView: mesSeleccionado: " + mesSeleccionado);
 
         // Definimos la acción a realizar cuando se selecciona un alimento de la lista
         gridview = (GridView) rootView.findViewById(R.id.gridview);
@@ -73,7 +77,6 @@ public class PlaceholderFragment extends Fragment {
             }
         });
 
-        modificarTextoMesActual(rootView);
         ordenarAlimentos();
         mostrarAlimentos();
 
@@ -81,23 +84,9 @@ public class PlaceholderFragment extends Fragment {
     }
 
     /**
-     * Modifica el mes que se muestra en pantalla.
-     */
-    private void modificarTextoMesActual(View rootView) {
-        final TextView textViewToChange = (TextView) rootView.findViewById(R.id.texto_mes);
-        int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", MainActivity.class.getPackage().getName());
-        textViewToChange.setText(recursoNombre);
-    }
-
-    /**
      * Ordena la lista de alimentos en función de la calidad para el mes seleccionado y el nombre del alimento.
      */
     private void ordenarAlimentos() {
-        System.out.println("### ALIMENTOS: " + alimentos);
-        if(alimentos != null) {
-            System.out.println("### TAMAÑO: " + alimentos.size());
-        }
-
         Comparator<Alimento> comparador = Alimento.getComparator(mesSeleccionado);
         Collections.sort(alimentos, comparador);
     }
@@ -106,7 +95,6 @@ public class PlaceholderFragment extends Fragment {
      * Muestra la lista de alimentos ordenada en la vista.
      */
     private void mostrarAlimentos() {
-        System.out.println("### MOSTRAR ALIMENTOS");
         ListaAlimentos listaAlimentos = new ListaAlimentos(getActivity(), alimentos, mesSeleccionado);
         gridview.setAdapter(listaAlimentos);
     }

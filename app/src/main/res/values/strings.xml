@@ -16,6 +16,7 @@
     <string name="mes_12">Diciembre</string>
 
     <!-- Alimentos -->
+    <string name="acelga">Acelga</string>
     <string name="aguacate">Aguacate</string>
     <string name="kiwi">Kiwi</string>
     <string name="lima">Lima</string>
