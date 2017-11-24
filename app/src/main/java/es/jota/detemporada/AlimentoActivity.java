@@ -34,12 +34,12 @@ public class AlimentoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        Alimento alimentoSeleccionado = (Alimento) intent.getSerializableExtra(MainActivity.EXTRA_ALIMENTO_SELECCIONADO);
+        Alimento alimentoSeleccionado = (Alimento) intent.getSerializableExtra(PlaceholderFragment.EXTRA_ALIMENTO_SELECCIONADO);
 
         nombreAlimento = alimentoSeleccionado.getNombre();
 
         // TODO El mes seleccionado se usará para marcarlo en el panel de calidades por mes
-        int mesSeleccionado = intent.getIntExtra(MainActivity.EXTRA_MES_SELECCIONADO, 1);
+        int mesSeleccionado = intent.getIntExtra(PlaceholderFragment.EXTRA_MES_SELECCIONADO, 1);
 
         // Si en el strings no está definido el nombre del alimento mostramos el nombre desde el objeto en BD
         int recursoNombre = AlimentoActivity.this.getResources().getIdentifier(alimentoSeleccionado.getNombre(), "string", AlimentoActivity.this.getPackageName());

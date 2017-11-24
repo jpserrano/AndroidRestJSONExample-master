@@ -11,16 +11,17 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListaAlimentos extends BaseAdapter {
 
     private static final String TAG = ListaAlimentos.class.getName();
 
     private Activity context;
-    private ArrayList<Alimento> alimentos;
+    private List<Alimento> alimentos;
     private int mesSeleccionado;
 
-    ListaAlimentos(Activity context, ArrayList<Alimento> alimentos, int mesSeleccionado) {
+    ListaAlimentos(Activity context, List<Alimento> alimentos, int mesSeleccionado) {
         this.context = context;
         this.alimentos = alimentos;
         this.mesSeleccionado = mesSeleccionado;

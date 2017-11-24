@@ -39,20 +39,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
 
-    public static final String EXTRA_ALIMENTO_SELECCIONADO = "es.jota.detemporada.ALIMENTOSELECCIONADO";
-    public static final String EXTRA_MES_SELECCIONADO = "es.jota.detemporada.MESELECCIONADO";
-
     Activity activity;
     CollectionReference coleccionAlimentosPais;
     ArrayList<Alimento> alimentos = new ArrayList<>();
     int mesSeleccionado;
-    GridView gridview;
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -75,29 +73,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         activity = this;
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(calcularMesActual() - 1);
-
         // Calcular el mes actual
         mesSeleccionado = calcularMesActual();
-
-        // Definimos la acción a realizar cuando se selecciona un alimento de la lista
-        gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, AlimentoActivity.class);
-                intent.putExtra(EXTRA_ALIMENTO_SELECCIONADO, alimentos.get(position));
-                intent.putExtra(EXTRA_MES_SELECCIONADO, mesSeleccionado);
-                startActivity(intent);
-            }
-        });
 
         // Obtener el país del usuario
         TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
@@ -160,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position + 1, alimentos);
         }
 
         @Override
@@ -201,8 +178,7 @@ public class MainActivity extends AppCompatActivity {
                         alimentos.add(alimento);
                     }
 
-                    ordenarAlimentos();
-                    mostrarAlimentos();
+                    enviarAlimentosAlFragment();
                 } else {
                     Log.w(TAG, "obtenerAlimentosPais: No se pudo obtener la lista de alimentos por pais.");
                 }
@@ -210,21 +186,29 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Ordena la lista de alimentos en función de la calidad para el mes seleccionado y el nombre del alimento.
-     */
-    private void ordenarAlimentos() {
-        Comparator<Alimento> comparador = Alimento.getComparator(mesSeleccionado);
-        Collections.sort(alimentos, comparador);
-    }
+    private void enviarAlimentosAlFragment() {
+        System.out.println("### Enviar ALIMENTOS: " + alimentos);
 
-    /**
-     * Muestra la lista de alimentos ordenada en la vista.
-     */
-    private void mostrarAlimentos() {
-        System.out.println("### MOSTRAR ALIMENTOS");
-        ListaAlimentos listaAlimentos = new ListaAlimentos(activity, alimentos, mesSeleccionado);
-        gridview.setAdapter(listaAlimentos);
+        if(alimentos != null) {
+            System.out.println("### Enviar ALIMENTOS TAMAÑO: " + alimentos.size());
+        }
+
+       /* Bundle bundle = new Bundle();
+        bundle.putSerializable("alimentos", alimentos);
+        PlaceholderFragment fragment = new PlaceholderFragment();
+        fragment.setArguments(bundle);*/
+
+
+        // Pintamos la pantalla
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Create the adapter that will return a fragment for each of the three primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(mesSeleccionado - 1);
     }
 
     public int getMesSeleccionado() { return mesSeleccionado; }
