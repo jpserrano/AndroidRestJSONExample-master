@@ -67,7 +67,7 @@ public class ListaAlimentos extends BaseAdapter {
         int recursoImagen = context.getResources().getIdentifier("img_" + nombreAlimento, "drawable", context.getPackageName());
         if(recursoImagen == 0) {
             vh.imageView.setImageResource(R.drawable.img_no_foto);
-            Log.w(TAG, "getView: el alimento '" + nombreAlimento + "' no no tiene la imagen asociada");
+            Log.w(TAG, "getView: el alimento '" + nombreAlimento + "' no tiene la imagen asociada");
         } else {
             vh.imageView.setImageResource(recursoImagen);
         }

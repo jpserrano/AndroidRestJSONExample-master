@@ -24,22 +24,21 @@ public class PlaceholderFragment extends Fragment {
     private static final String ARG_ALIMENTOS = "alimentos";
 
     public static final String EXTRA_ALIMENTO_SELECCIONADO = "es.jota.detemporada.ALIMENTOSELECCIONADO";
-    public static final String EXTRA_MES_SELECCIONADO = "es.jota.detemporada.MESELECCIONADO";
+    public static final String EXTRA_MES_SELECCIONADO = "es.jota.detemporada.MESSELECCIONADO";
 
-    int mesSeleccionado;
-    GridView gridview;
-    List<Alimento> alimentos = new ArrayList<>();
+    static int mesSeleccionado;
+    //List<Alimento> alimentos = new ArrayList<>();
 
     public PlaceholderFragment() { }
 
     /**
      * Returns a new instance of this fragment for the given section number.
      */
-    public static PlaceholderFragment newInstance(int sectionNumber, ArrayList<Alimento> alimentos) {
+    public static PlaceholderFragment newInstance(int sectionNumber/*, ArrayList<Alimento> alimentos*/) {
         PlaceholderFragment fragment = new PlaceholderFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        args.putSerializable(ARG_ALIMENTOS, alimentos);
+        //args.putSerializable(ARG_ALIMENTOS, alimentos);
         fragment.setArguments(args);
 
         System.out.println("### newInstance");
@@ -62,12 +61,32 @@ public class PlaceholderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_alimentos, container, false);
         mesSeleccionado = getArguments().getInt(ARG_SECTION_NUMBER);
-        alimentos = (ArrayList<Alimento>)getArguments().getSerializable(ARG_ALIMENTOS);
+        //alimentos = (ArrayList<Alimento>)getArguments().getSerializable(ARG_ALIMENTOS);
 
         System.out.println("### onCreateView: mesSeleccionado: " + mesSeleccionado);
 
+        /*ordenarAlimentos();
+        mostrarAlimentos(rootView);*/
+
+        return rootView;
+    }
+
+    /**
+     * Ordena la lista de alimentos en función de la calidad para el mes seleccionado y el nombre del alimento.
+     */
+    /*private void ordenarAlimentos() {
+        Comparator<Alimento> comparador = Alimento.getComparator(mesSeleccionado);
+        Collections.sort(alimentos, comparador);
+    }*/
+
+    /**
+     * Muestra la lista de alimentos ordenada en la vista.
+     */
+    /*private void mostrarAlimentos(View rootView) {
+        System.out.println("*********** mostrarAlimentos: " + mesSeleccionado);
+
         // Definimos la acción a realizar cuando se selecciona un alimento de la lista
-        gridview = (GridView) rootView.findViewById(R.id.gridview);
+        GridView gridview = (GridView) rootView.findViewById(R.id.gridview);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(getContext(), AlimentoActivity.class);
@@ -77,25 +96,7 @@ public class PlaceholderFragment extends Fragment {
             }
         });
 
-        ordenarAlimentos();
-        mostrarAlimentos();
-
-        return rootView;
-    }
-
-    /**
-     * Ordena la lista de alimentos en función de la calidad para el mes seleccionado y el nombre del alimento.
-     */
-    private void ordenarAlimentos() {
-        Comparator<Alimento> comparador = Alimento.getComparator(mesSeleccionado);
-        Collections.sort(alimentos, comparador);
-    }
-
-    /**
-     * Muestra la lista de alimentos ordenada en la vista.
-     */
-    private void mostrarAlimentos() {
         ListaAlimentos listaAlimentos = new ListaAlimentos(getActivity(), alimentos, mesSeleccionado);
         gridview.setAdapter(listaAlimentos);
-    }
+    }*/
 }

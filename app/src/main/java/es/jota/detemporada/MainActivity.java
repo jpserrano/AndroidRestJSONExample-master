@@ -2,6 +2,7 @@ package es.jota.detemporada;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,8 +27,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
+
+import static es.jota.detemporada.PlaceholderFragment.EXTRA_ALIMENTO_SELECCIONADO;
+import static es.jota.detemporada.PlaceholderFragment.EXTRA_MES_SELECCIONADO;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         // Acceso a la BD de Cloud Firestore
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         coleccionAlimentosPais = database.collection("alimentos_" + countryCodeValue);
+
+        enviarAlimentosAlFragment();
         obtenerAlimentosPais();
     }
 
@@ -86,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1, alimentos);
+            return PlaceholderFragment.newInstance(position + 1/*, alimentos*/);
         }
 
         @Override
@@ -116,15 +127,13 @@ public class MainActivity extends AppCompatActivity {
                 alimentos.clear();
 
                 if(task.isSuccessful()) {
-                    Alimento alimento;
-
                     // Formar la lista de alimentos
-                    for(DocumentSnapshot document : task.getResult()) {
-                        alimento = document.toObject(Alimento.class);
-                        alimentos.add(alimento);
+                    for(DocumentSnapshot documentoAlimento : task.getResult()) {
+                        alimentos.add(documentoAlimento.toObject(Alimento.class));
                     }
 
-                    enviarAlimentosAlFragment();
+                    ordenarAlimentos();
+                    mostrarAlimentos();
                 } else {
                     Log.w(TAG, "obtenerAlimentosPais: No se pudo obtener la lista de alimentos por pais.");
                 }
@@ -144,13 +153,50 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 System.out.println("*** onPageSelected: " + position);
-                int recursoNombre = getResources().getIdentifier("mes_" + (position + 1), "string", MainActivity.class.getPackage().getName());
+                mesSeleccionado = position + 1;
+                int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", MainActivity.class.getPackage().getName());
                 Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
                 toolbar.setTitle(recursoNombre);
+
+/***********************/
+ordenarAlimentos();
+mostrarAlimentos();
+/*************************/
             }
 
             @Override
             public void onPageScrollStateChanged(int state) { }
         });
     }
+
+    /*******************/
+    /**
+     * Ordena la lista de alimentos en función de la calidad para el mes seleccionado y el nombre del alimento.
+     */
+    private void ordenarAlimentos() {
+        Comparator<Alimento> comparador = Alimento.getComparator(mesSeleccionado);
+        Collections.sort(alimentos, comparador);
+    }
+
+    /**
+     * Muestra la lista de alimentos ordenada en la vista.
+     */
+    private void mostrarAlimentos() {
+        System.out.println("*********** mostrarAlimentos: " + mesSeleccionado);
+
+        // Definimos la acción a realizar cuando se selecciona un alimento de la lista
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, AlimentoActivity.class);
+                intent.putExtra(EXTRA_ALIMENTO_SELECCIONADO, alimentos.get(position));
+                intent.putExtra(EXTRA_MES_SELECCIONADO, mesSeleccionado);
+                startActivity(intent);
+            }
+        });
+
+        ListaAlimentos listaAlimentos = new ListaAlimentos(MainActivity.this, alimentos, mesSeleccionado);
+        gridview.setAdapter(listaAlimentos);
+    }
+    /********************/
 }
