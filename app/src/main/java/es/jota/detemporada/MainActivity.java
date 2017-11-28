@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -32,17 +33,20 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
-import static es.jota.detemporada.PlaceholderFragment.EXTRA_ALIMENTO_SELECCIONADO;
-import static es.jota.detemporada.PlaceholderFragment.EXTRA_MES_SELECCIONADO;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
 
+    public static final String EXTRA_ALIMENTO_SELECCIONADO = "es.jota.detemporada.ALIMENTOSELECCIONADO";
+    public static final String EXTRA_MES_SELECCIONADO = "es.jota.detemporada.MESSELECCIONADO";
+
     Activity activity;
     CollectionReference coleccionAlimentosPais;
     ArrayList<Alimento> alimentos = new ArrayList<Alimento>();
     int mesSeleccionado;
+    private Toolbar toolbar;
+    private GridView gridview;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         // Calcular el mes actual
         mesSeleccionado = calcularMesActual();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", MainActivity.class.getPackage().getName());
         toolbar.setTitle(recursoNombre);
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -97,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1/*, alimentos*/);
+            return PlaceholderFragment.newInstance(/*position + 1, alimentos*/);
         }
 
         @Override
@@ -155,13 +159,10 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("*** onPageSelected: " + position);
                 mesSeleccionado = position + 1;
                 int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", MainActivity.class.getPackage().getName());
-                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
                 toolbar.setTitle(recursoNombre);
 
-/***********************/
-ordenarAlimentos();
-mostrarAlimentos();
-/*************************/
+                ordenarAlimentos();
+                mostrarAlimentos();
             }
 
             @Override
@@ -169,7 +170,6 @@ mostrarAlimentos();
         });
     }
 
-    /*******************/
     /**
      * Ordena la lista de alimentos en función de la calidad para el mes seleccionado y el nombre del alimento.
      */
@@ -185,7 +185,7 @@ mostrarAlimentos();
         System.out.println("*********** mostrarAlimentos: " + mesSeleccionado);
 
         // Definimos la acción a realizar cuando se selecciona un alimento de la lista
-        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview = (GridView) findViewById(R.id.gridview);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, AlimentoActivity.class);
@@ -198,5 +198,4 @@ mostrarAlimentos();
         ListaAlimentos listaAlimentos = new ListaAlimentos(MainActivity.this, alimentos, mesSeleccionado);
         gridview.setAdapter(listaAlimentos);
     }
-    /********************/
 }

@@ -1,18 +1,10 @@
 package es.jota.detemporada;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -20,13 +12,10 @@ import java.util.List;
 public class PlaceholderFragment extends Fragment {
 
     // The fragment argument representing the section number for this fragment
-    private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String ARG_ALIMENTOS = "alimentos";
+    /*private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_ALIMENTOS = "alimentos";*/
 
-    public static final String EXTRA_ALIMENTO_SELECCIONADO = "es.jota.detemporada.ALIMENTOSELECCIONADO";
-    public static final String EXTRA_MES_SELECCIONADO = "es.jota.detemporada.MESSELECCIONADO";
-
-    static int mesSeleccionado;
+    //static int mesSeleccionado;
     //List<Alimento> alimentos = new ArrayList<>();
 
     public PlaceholderFragment() { }
@@ -34,12 +23,12 @@ public class PlaceholderFragment extends Fragment {
     /**
      * Returns a new instance of this fragment for the given section number.
      */
-    public static PlaceholderFragment newInstance(int sectionNumber/*, ArrayList<Alimento> alimentos*/) {
+    public static PlaceholderFragment newInstance(/*int sectionNumber, ArrayList<Alimento> alimentos*/) {
         PlaceholderFragment fragment = new PlaceholderFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        //Bundle args = new Bundle();
+        //args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         //args.putSerializable(ARG_ALIMENTOS, alimentos);
-        fragment.setArguments(args);
+        //fragment.setArguments(args);
 
         System.out.println("### newInstance");
 
@@ -60,10 +49,10 @@ public class PlaceholderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_alimentos, container, false);
-        mesSeleccionado = getArguments().getInt(ARG_SECTION_NUMBER);
+        //mesSeleccionado = getArguments().getInt(ARG_SECTION_NUMBER);
         //alimentos = (ArrayList<Alimento>)getArguments().getSerializable(ARG_ALIMENTOS);
 
-        System.out.println("### onCreateView: mesSeleccionado: " + mesSeleccionado);
+        //System.out.println("### onCreateView: mesSeleccionado: " + mesSeleccionado);
 
         /*ordenarAlimentos();
         mostrarAlimentos(rootView);*/
