@@ -83,7 +83,7 @@ public class AlimentoActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
-                if (document != null) {
+                if (document.exists()) {
                     alimentoGlobal = document.toObject(AlimentoGlobal.class);
                     establecerDatosEnVista();
                 } else {
