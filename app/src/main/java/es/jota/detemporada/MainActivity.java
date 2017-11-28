@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         coleccionAlimentosPais = database.collection("alimentos_" + countryCodeValue);
 
         enviarAlimentosAlFragment();
+
         obtenerAlimentosPais();
     }
 
@@ -188,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Muestra la lista de alimentos ordenada en la vista.
+     *
      */
     private void mostrarAlimentos() {
         System.out.println("*********** mostrarAlimentos: " + mesSeleccionado);
