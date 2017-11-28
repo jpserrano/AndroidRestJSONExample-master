@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -108,6 +109,12 @@ public class MainActivity extends AppCompatActivity {
         public int getCount() {
             return 12;
         }
+
+        //this is called when notifyDataSetChanged() is called
+        @Override
+        public int getItemPosition(Object object) {
+            return PagerAdapter.POSITION_NONE;
+        }
     }
 
     /**
@@ -131,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
                 alimentos.clear();
 
                 if(task.isSuccessful()) {
-                    // Formar la lista de alimentos
                     for(DocumentSnapshot documentoAlimento : task.getResult()) {
                         alimentos.add(documentoAlimento.toObject(Alimento.class));
                     }
@@ -160,6 +166,8 @@ public class MainActivity extends AppCompatActivity {
                 mesSeleccionado = position + 1;
                 int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", MainActivity.class.getPackage().getName());
                 toolbar.setTitle(recursoNombre);
+
+                mViewPager.getAdapter().notifyDataSetChanged();
 
                 ordenarAlimentos();
                 mostrarAlimentos();
