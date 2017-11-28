@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         gridview = (GridView) findViewById(R.id.gridview);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, AlimentoActivity.class);
+                Intent intent = new Intent(MainActivity.this, ScrollingActivity.class);
                 intent.putExtra(EXTRA_ALIMENTO_SELECCIONADO, alimentos.get(position));
                 intent.putExtra(EXTRA_MES_SELECCIONADO, mesSeleccionado);
                 startActivity(intent);

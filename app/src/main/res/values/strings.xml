@@ -27,6 +27,7 @@
     <string name="pera">Pera</string>
 
     <!-- Propiedades del alimento -->
+    <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="calorias">Calorías</string>
     <string name="carbohidratos">Carbohidratos</string>
     <string name="proteinas">Proteínas</string>
