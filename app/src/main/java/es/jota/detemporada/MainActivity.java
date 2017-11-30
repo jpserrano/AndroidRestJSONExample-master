@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 System.out.println("*** onPageSelected: " + position);
                 mesSeleccionado = position + 1;
-                int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", MainActivity.class.getPackage().getName());
+                int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", getPackageName());
                 toolbar.setTitle(recursoNombre);
 
                 mViewPager.getAdapter().notifyDataSetChanged();

@@ -15,6 +15,19 @@
     <string name="mes_11">Noviembre</string>
     <string name="mes_12">Diciembre</string>
 
+    <string name="mes_corto_1">Ene</string>
+    <string name="mes_corto_2">Feb</string>
+    <string name="mes_corto_3">Mar</string>
+    <string name="mes_corto_4">Abr</string>
+    <string name="mes_corto_5">May</string>
+    <string name="mes_corto_6">Jun</string>
+    <string name="mes_corto_7">Jul</string>
+    <string name="mes_corto_8">Ago</string>
+    <string name="mes_corto_9">Sep</string>
+    <string name="mes_corto_10">Oct</string>
+    <string name="mes_corto_11">Nov</string>
+    <string name="mes_corto_12">Dic</string>
+
     <!-- Alimentos -->
     <string name="acelga">Acelga</string>
     <string name="aguacate">Aguacate</string>

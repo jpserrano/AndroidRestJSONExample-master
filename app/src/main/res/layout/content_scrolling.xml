@@ -8,76 +8,92 @@
     tools:context="es.jota.detemporada.ScrollingActivity"
     tools:showIn="@layout/activity_scrolling">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingRight="16dp"
+        android:showDividers="middle"
+        android:divider="?android:dividerHorizontal">
 
-        <TextView
-            android:id="@+id/texto_calorias"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/calorias"
-            style="@style/textoPropiedadAlimento" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/carbohidratos"
-            style="@style/textoPropiedadAlimento" />
+            <TextView
+                android:id="@+id/texto_calorias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/calorias"
+                style="@style/textoPropiedadAlimento" />
 
-        <TextView
-            android:id="@+id/valor_calorias"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/texto_calorias"
-            style="@style/propiedadAlimento" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/carbohidratos"
+                style="@style/textoPropiedadAlimento" />
 
-        <TextView
-            android:id="@+id/valor_carbohidratos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/texto_calorias"
-            style="@style/propiedadAlimento" />
+            <TextView
+                android:id="@+id/valor_calorias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/texto_calorias"
+                style="@style/propiedadAlimento" />
 
-        <TextView
-            android:id="@+id/texto_proteinas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/valor_calorias"
-            android:text="@string/proteinas"
-            style="@style/textoPropiedadAlimento" />
+            <TextView
+                android:id="@+id/valor_carbohidratos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/texto_calorias"
+                style="@style/propiedadAlimento" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/valor_calorias"
-            android:text="@string/grasas"
-            style="@style/textoPropiedadAlimento" />
+            <TextView
+                android:id="@+id/texto_proteinas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/valor_calorias"
+                android:text="@string/proteinas"
+                style="@style/textoPropiedadAlimento" />
 
-        <TextView
-            android:id="@+id/valor_proteinas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/texto_proteinas"
-            style="@style/propiedadAlimento" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/valor_calorias"
+                android:text="@string/grasas"
+                style="@style/textoPropiedadAlimento" />
 
-        <TextView
-            android:id="@+id/valor_grasas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/texto_proteinas"
-            style="@style/propiedadAlimento" />
+            <TextView
+                android:id="@+id/valor_proteinas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/texto_proteinas"
+                style="@style/propiedadAlimento" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/valor_grasas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/texto_proteinas"
+                style="@style/propiedadAlimento" />
+
+        </RelativeLayout>
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="256dp"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

@@ -14,11 +14,21 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static es.jota.detemporada.MainActivity.EXTRA_ALIMENTO_SELECCIONADO;
 import static es.jota.detemporada.MainActivity.EXTRA_MES_SELECCIONADO;
@@ -50,6 +60,7 @@ public class ScrollingActivity extends AppCompatActivity {
         recuperarDatosMainActivity();
         establecerDatosToolbar();
         obtenerDatosGlobalesAlimento();
+        mostrarGraficoCalidades();
     }
 
     /**
@@ -123,5 +134,67 @@ public class ScrollingActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.valor_proteinas)).setText(String.valueOf(alimentoGlobal.getProteinas()) + " gr");
             ((TextView) findViewById(R.id.valor_grasas)).setText(String.valueOf(alimentoGlobal.getGrasas()) + " gr");
         }
+    }
+
+    /**
+     * Muestra el gráfico con la calidad del alimento por mes.
+     */
+    private void mostrarGraficoCalidades() {
+        List<BarEntry> calidades = new ArrayList<BarEntry>();
+        float ejeX = 0;
+
+        for(Long ejeY : alimentoSeleccionado.getCalidades()) {
+            calidades.add(new BarEntry(ejeX, ejeY));
+            ejeX++;
+        }
+
+        BarDataSet dataSet = new BarDataSet(calidades, "Calidades");
+        BarData barData = new BarData(dataSet);
+        BarChart barChart = (BarChart) findViewById(R.id.chart);
+        barChart.setData(barData);
+
+        aplicarEstilosChart(barChart);
+
+        // Refrescar el gráfico
+        barChart.invalidate();
+    }
+
+    private void aplicarEstilosChart(BarChart barChart) {
+        // Deshabilita el zoom
+        barChart.setScaleEnabled(false);
+
+        // Ocultar los textos de la legenda y descripción
+        barChart.getDescription().setEnabled(false);
+        barChart.getLegend().setEnabled(false);
+
+        // Elimina los labels con valores de la izquierda/derecha
+        barChart.getAxisLeft().setEnabled(false);
+        barChart.getAxisRight().setEnabled(false);
+
+        // Elimina el grid posterior al gráfico
+        //barChart.getXAxis().setEnabled(false);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getAxisRight().setDrawGridLines(false);
+        barChart.getAxisRight().setDrawAxisLine(false);
+        barChart.getAxisLeft().setDrawAxisLine(false);
+
+        barChart.getData().setDrawValues(false);
+
+        // Establecer los label del eje X
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setLabelCount(12);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                int recursoNombre = getResources().getIdentifier("mes_corto_" + ((int)value + 1), "string", MainActivity.class.getPackage().getName());
+                return getResources().getString(recursoNombre);
+            }
+        });
+
+
+
+
     }
 }

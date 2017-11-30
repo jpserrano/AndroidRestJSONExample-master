@@ -33,6 +33,9 @@ dependencies {
 
     compile 'com.google.firebase:firebase-core:11.6.0'
     compile 'com.google.firebase:firebase-firestore:11.6.0'
+
+    // Librería para mostrar charts
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 
 
