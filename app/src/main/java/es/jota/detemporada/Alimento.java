@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Alimento implements Serializable {
 
+    private Long id;
     private String nombre;
     private List<Long> calidades;
 
@@ -42,6 +43,9 @@ public class Alimento implements Serializable {
             return comparacion;
         }
     }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     String getNombre() { return nombre; }
     public void setNombre(String nombre) {

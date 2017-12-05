@@ -32,8 +32,7 @@ public class ListaAlimentos extends BaseAdapter {
 
         if(convertView == null) {
             LayoutInflater layoutInflater = context.getLayoutInflater();
-            //view = layoutInflater.inflate(R.layout.row_item, parent, false);
-            view = layoutInflater.inflate(R.layout.row_item, null);
+            view = layoutInflater.inflate(R.layout.row_item, parent, false);
         } else {
             view = convertView;
         }
