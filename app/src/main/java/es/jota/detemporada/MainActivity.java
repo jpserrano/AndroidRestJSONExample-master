@@ -1,21 +1,21 @@
 package es.jota.detemporada;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
+import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
@@ -34,6 +34,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
+import es.jota.detemporada.es.jota.detemporada.dominio.Alimento;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,31 +43,13 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_ALIMENTO_SELECCIONADO = "es.jota.detemporada.ALIMENTOSELECCIONADO";
     public static final String EXTRA_MES_SELECCIONADO = "es.jota.detemporada.MESSELECCIONADO";
 
-    Activity activity;
-    CollectionReference coleccionAlimentosPais;
-    ArrayList<Alimento> alimentos = new ArrayList<Alimento>();
     int mesSeleccionado;
     private Toolbar toolbar;
-    private GridView gridview;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        activity = this;
-
-        // Calcular el mes actual
-        mesSeleccionado = calcularMesActual();
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", MainActivity.class.getPackage().getName());
-        toolbar.setTitle(recursoNombre);
 
         // Obtener el país del usuario
         TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
@@ -78,44 +61,54 @@ public class MainActivity extends AppCompatActivity {
             countryCodeValue = "ES";
         }
 
+        mesSeleccionado = calcularMesActual();
+
         // Acceso a la BD de Cloud Firestore
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        coleccionAlimentosPais = database.collection("alimentos_" + countryCodeValue);
+        CollectionReference coleccionAlimentosPais = database.collection("alimentos_" + countryCodeValue);
+        coleccionAlimentosPais.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    ArrayList<Alimento> alimentos = new ArrayList<>();
 
-        enviarAlimentosAlFragment();
+                    for(DocumentSnapshot documentoAlimento : task.getResult()) {
+                        alimentos.add(documentoAlimento.toObject(Alimento.class));
+                    }
 
-        obtenerAlimentosPais();
+                    // Lo hacemos una vez se han obtenido los alimentos
+                    crearAdaptador(alimentos);
+                } else {
+                    Log.w(TAG, "obtenerAlimentosPais: No se pudo obtener la lista de alimentos por pais.");
+                }
+            }
+        });
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", getPackageName());
+        toolbar.setTitle(recursoNombre);
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+    private void crearAdaptador(ArrayList<Alimento> alimentos) {
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), alimentos);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(mesSeleccionado - 1);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+            @Override
+            public void onPageSelected(int position) {
+                mesSeleccionado = position + 1;
+                int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", getPackageName());
+                toolbar.setTitle(recursoNombre);
+            }
 
-        @Override
-        public Fragment getItem(int position) {
-            System.out.println("*** getItem: " + position);
-
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(/*position + 1, alimentos*/);
-        }
-
-        @Override
-        public int getCount() {
-            return 12;
-        }
-
-        //this is called when notifyDataSetChanged() is called
-        @Override
-        public int getItemPosition(Object object) {
-            return PagerAdapter.POSITION_NONE;
-        }
+            @Override
+            public void onPageScrollStateChanged(int state) { }
+        });
     }
 
     /**
@@ -129,83 +122,81 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Obtiene de BD el listado de alimentos del pais actual ordenados por calidad en el mes que nos encontramos.
+     * A placeholder fragment containing a simple view.
      */
-    private void obtenerAlimentosPais() {
-        coleccionAlimentosPais.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+    public static class PlaceholderFragment extends Fragment {
 
-                alimentos.clear();
+        private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final String ARG_ALIMENTOS = "alimentos";
 
-                if(task.isSuccessful()) {
-                    for(DocumentSnapshot documentoAlimento : task.getResult()) {
-                        alimentos.add(documentoAlimento.toObject(Alimento.class));
-                    }
+        public PlaceholderFragment() { }
 
-                    ordenarAlimentos();
-                    mostrarAlimentos();
-                } else {
-                    Log.w(TAG, "obtenerAlimentosPais: No se pudo obtener la lista de alimentos por pais.");
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(int mesSeleccionado, ArrayList<Alimento> alimentos) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, mesSeleccionado);
+            args.putSerializable(ARG_ALIMENTOS, alimentos);
+            fragment.setArguments(args);
+
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            final ArrayList<Alimento> alimentos = (ArrayList<Alimento>)getArguments().getSerializable(ARG_ALIMENTOS);
+            final int mesSeleccionado = getArguments().getInt(ARG_SECTION_NUMBER);
+            final ListaAlimentos listaAlimentos = new ListaAlimentos(getActivity(), alimentos, mesSeleccionado);
+
+            View rootView = inflater.inflate(R.layout.fragment_alimentos, container, false);
+            GridView gridview = (GridView) rootView.findViewById(R.id.gridview);
+            gridview.setAdapter(listaAlimentos);
+
+            gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                    Intent intent = new Intent(getContext(), ScrollingActivity.class);
+                    intent.putExtra(EXTRA_ALIMENTO_SELECCIONADO, alimentos.get(position));
+                    intent.putExtra(EXTRA_MES_SELECCIONADO, mesSeleccionado);
+                    startActivity(intent);
                 }
-            }
-        });
+            });
+
+            return rootView;
+        }
     }
 
-    private void enviarAlimentosAlFragment() {
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
-        mViewPager.setCurrentItem(mesSeleccionado - 1);
 
-        /*mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
-            @Override
-            public void onPageSelected(int position) {
-                System.out.println("*** onPageSelected: " + position);
-                mesSeleccionado = position + 1;
-                int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", getPackageName());
-                toolbar.setTitle(recursoNombre);
+        private final ArrayList<Alimento> alimentosAdapter;
 
-                mViewPager.getAdapter().notifyDataSetChanged();
+        public SectionsPagerAdapter(FragmentManager fm, ArrayList<Alimento> alimentos) {
+            super(fm);
+            alimentosAdapter = alimentos;
+        }
 
-                ordenarAlimentos();
-                mostrarAlimentos();
-            }
+        @Override
+        public Fragment getItem(int position) {
+            ordenarAlimentos(position + 1);
+            ArrayList<Alimento> alimentosTemp = (ArrayList<Alimento>)alimentosAdapter.clone();
 
-            @Override
-            public void onPageScrollStateChanged(int state) { }
-        });*/
-    }
+            return PlaceholderFragment.newInstance(position + 1, alimentosTemp);
+        }
 
-    /**
-     * Ordena la lista de alimentos en función de la calidad para el mes seleccionado y el nombre del alimento.
-     */
-    private void ordenarAlimentos() {
-        Comparator<Alimento> comparador = Alimento.getComparator(mesSeleccionado);
-        Collections.sort(alimentos, comparador);
-    }
+        @Override
+        public int getCount() {
+            return 12;
+        }
 
-    /**
-     * Muestra la lista de alimentos ordenada en la vista.
-     *
-     */
-    private void mostrarAlimentos() {
-        System.out.println("*********** mostrarAlimentos: " + mesSeleccionado);
-
-        // Definimos la acción a realizar cuando se selecciona un alimento de la lista
-        gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-                intent.putExtra(EXTRA_ALIMENTO_SELECCIONADO, alimentos.get(position));
-                intent.putExtra(EXTRA_MES_SELECCIONADO, mesSeleccionado);
-                startActivity(intent);
-            }
-        });
-
-        ListaAlimentos listaAlimentos = new ListaAlimentos(MainActivity.this, alimentos, mesSeleccionado);
-        gridview.setAdapter(listaAlimentos);
+        /**
+         * Ordena la lista de alimentos en función de la calidad para el mes seleccionado y el nombre del alimento.
+         */
+        private void ordenarAlimentos(int mes) {
+            Comparator<Alimento> comparador = Alimento.getComparator(mes);
+            Collections.sort(alimentosAdapter, comparador);
+        }
     }
 }

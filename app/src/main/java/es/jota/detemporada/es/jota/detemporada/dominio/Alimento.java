@@ -1,19 +1,17 @@
-package es.jota.detemporada;
+package es.jota.detemporada.es.jota.detemporada.dominio;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class Alimento implements Serializable {
 
-    private Long id;
     private String nombre;
     private List<Long> calidades;
 
     public Alimento() {}
 
-    static Comparator<Alimento> getComparator(int mesComparacion) {
+    public static Comparator<Alimento> getComparator(int mesComparacion) {
         return new AlimentoComparator(mesComparacion);
     }
 
@@ -44,14 +42,11 @@ public class Alimento implements Serializable {
         }
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    String getNombre() { return nombre; }
+    public String getNombre() { return nombre; }
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    List<Long> getCalidades() { return calidades; }
+    public List<Long> getCalidades() { return calidades; }
     public void setCalidades(List<Long> calidades) { this.calidades = calidades; }
 }

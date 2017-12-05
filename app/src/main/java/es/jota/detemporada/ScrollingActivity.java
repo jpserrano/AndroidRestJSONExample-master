@@ -2,7 +2,6 @@ package es.jota.detemporada;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +28,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import es.jota.detemporada.es.jota.detemporada.dominio.Alimento;
+import es.jota.detemporada.es.jota.detemporada.dominio.AlimentoGlobal;
 
 import static es.jota.detemporada.MainActivity.EXTRA_ALIMENTO_SELECCIONADO;
 import static es.jota.detemporada.MainActivity.EXTRA_MES_SELECCIONADO;
@@ -140,7 +142,7 @@ public class ScrollingActivity extends AppCompatActivity {
      * Muestra el gráfico con la calidad del alimento por mes.
      */
     private void mostrarGraficoCalidades() {
-        List<BarEntry> calidades = new ArrayList<BarEntry>();
+        List<BarEntry> calidades = new ArrayList<>();
         float ejeX = 0;
 
         for(Long ejeY : alimentoSeleccionado.getCalidades()) {

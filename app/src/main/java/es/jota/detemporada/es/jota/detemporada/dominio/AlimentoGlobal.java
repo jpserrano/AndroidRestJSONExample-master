@@ -1,4 +1,4 @@
-package es.jota.detemporada;
+package es.jota.detemporada.es.jota.detemporada.dominio;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,15 +21,15 @@ public class AlimentoGlobal implements Serializable {
         this.nombre = nombre;
     }
 
-    Long getCalorias() { return calorias; }
+    public Long getCalorias() { return calorias; }
     public void setCalorias(Long calorias) { this.calorias = calorias; }
 
-    Double getCarbohidratos() { return carbohidratos; }
+    public Double getCarbohidratos() { return carbohidratos; }
     public void setCarbohidratos(Double carbohidratos) { this.carbohidratos = carbohidratos; }
 
-    Double getProteinas() { return proteinas; }
+    public Double getProteinas() { return proteinas; }
     public void setProteinas(Double proteinas) { this.proteinas = proteinas; }
 
-    Double getGrasas() { return grasas; }
+    public Double getGrasas() { return grasas; }
     public void setGrasas(Double grasas) { this.grasas = grasas; }
 }

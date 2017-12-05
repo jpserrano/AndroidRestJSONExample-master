@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import es.jota.detemporada.es.jota.detemporada.dominio.Alimento;
+
 public class ListaAlimentos extends BaseAdapter {
 
     private static final String TAG = ListaAlimentos.class.getName();
