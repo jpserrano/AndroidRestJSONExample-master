@@ -31,6 +31,10 @@
     <!-- Alimentos -->
     <string name="acelga">Acelga</string>
     <string name="aguacate">Aguacate</string>
+    <string name="batata">Batata</string>
+    <string name="brocoli">Brocoli</string>
+    <string name="cardo">Cardo</string>
+    <string name="champiñon">Champiñón</string>
     <string name="kiwi">Kiwi</string>
     <string name="lima">Lima</string>
     <string name="limon">Limón</string>

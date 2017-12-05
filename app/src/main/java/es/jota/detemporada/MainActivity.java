@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
         mViewPager.setCurrentItem(mesSeleccionado - 1);
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        /*mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) { }
-        });
+        });*/
     }
 
     /**

@@ -26,52 +26,44 @@ public class ListaAlimentos extends BaseAdapter {
         this.mesSeleccionado = mesSeleccionado;
     }
 
-    public static class ViewHolder {
-        ImageView imageView;
-        TextView textViewNombre;
-        RatingBar ratingBar;
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
+        View view;
 
-        LayoutInflater inflater = context.getLayoutInflater();
-        ViewHolder vh;
         if(convertView == null) {
-            vh = new ViewHolder();
-            row = inflater.inflate(R.layout.row_item, parent, false);
-            vh.imageView = (ImageView) row.findViewById(R.id.imageView);
-            vh.textViewNombre = (TextView) row.findViewById(R.id.textViewNombre);
-            vh.ratingBar = (RatingBar) row.findViewById(R.id.ratingBar);
-            row.setTag(vh);
+            LayoutInflater layoutInflater = context.getLayoutInflater();
+            view = layoutInflater.inflate(R.layout.row_item, parent, false);
         } else {
-            vh = (ViewHolder) convertView.getTag();
+            view = convertView;
         }
+
+        ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+        TextView textView = (TextView) view.findViewById(R.id.textViewNombre);
+        RatingBar ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
 
         String nombreAlimento = alimentos.get(position).getNombre();
 
         // Si en el strings no está definido el nombre del alimento mostramos el nombre desde el objeto en BD
         int recursoNombre = context.getResources().getIdentifier(nombreAlimento, "string", context.getPackageName());
         if(recursoNombre == 0) {
-            vh.textViewNombre.setText(nombreAlimento);
+            textView.setText(nombreAlimento);
             Log.w(TAG, "getView: el alimento '" + nombreAlimento + "' no está definido en el fichero string");
         } else {
-            vh.textViewNombre.setText(recursoNombre);
+            textView.setText(recursoNombre);
         }
 
-        vh.ratingBar.setRating((alimentos.get(position).getCalidades().get(mesSeleccionado - 1)) / 2);
+        ratingBar.setRating((alimentos.get(position).getCalidades().get(mesSeleccionado - 1)) / 2);
 
         // Si no existe la imagen del alimento mostramos una imagen genérica para que la interfaz no se descuadre
         int recursoImagen = context.getResources().getIdentifier("img_" + nombreAlimento, "drawable", context.getPackageName());
         if(recursoImagen == 0) {
-            vh.imageView.setImageResource(R.drawable.img_no_foto);
+            imageView.setImageResource(R.drawable.img_no_foto);
             Log.w(TAG, "getView: el alimento '" + nombreAlimento + "' no tiene la imagen asociada");
         } else {
-            vh.imageView.setImageResource(recursoImagen);
+            imageView.setImageResource(recursoImagen);
         }
 
-        return  row;
+        return view;
     }
 
     public long getItemId(int position) {

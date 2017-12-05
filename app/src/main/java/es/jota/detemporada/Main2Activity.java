@@ -1,8 +1,11 @@
 package es.jota.detemporada;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -12,24 +15,38 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
+import static es.jota.detemporada.MainActivity.EXTRA_ALIMENTO_SELECCIONADO;
+import static es.jota.detemporada.MainActivity.EXTRA_MES_SELECCIONADO;
+
 public class Main2Activity extends AppCompatActivity {
+
+    private static final String TAG = Main2Activity.class.getName();
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -65,24 +82,37 @@ public class Main2Activity extends AppCompatActivity {
             countryCodeValue = "ES";
         }
 
+        mesSeleccionado = calcularMesActual();
+
         // Acceso a la BD de Cloud Firestore
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         coleccionAlimentosPais = database.collection("alimentos_" + countryCodeValue);
+        coleccionAlimentosPais.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    ArrayList<Alimento> alimentos = new ArrayList<Alimento>();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+                    for(DocumentSnapshot documentoAlimento : task.getResult()) {
+                        alimentos.add(documentoAlimento.toObject(Alimento.class));
+                    }
 
-        mesSeleccionado = calcularMesActual();
+                    // Lo hacemos una vez se han obtenido los alimentos
+                    crearAdaptador(alimentos);
+                } else {
+                    Log.w(TAG, "obtenerAlimentosPais: No se pudo obtener la lista de alimentos por pais.");
+                }
+            }
+        });
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", getPackageName());
         toolbar.setTitle(recursoNombre);
+    }
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
+    private void crearAdaptador(ArrayList<Alimento> alimentos) {
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), alimentos);
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(mesSeleccionado - 1);
@@ -92,15 +122,9 @@ public class Main2Activity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                System.out.println("*** onPageSelected: " + position);
                 mesSeleccionado = position + 1;
                 int recursoNombre = getResources().getIdentifier("mes_" + mesSeleccionado, "string", getPackageName());
                 toolbar.setTitle(recursoNombre);
-
-                mViewPager.getAdapter().notifyDataSetChanged();
-
-                /*ordenarAlimentos();
-                mostrarAlimentos();*/
             }
 
             @Override
@@ -147,34 +171,54 @@ public class Main2Activity extends AppCompatActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            final ArrayList<Alimento> alimentos = (ArrayList<Alimento>)getArguments().getSerializable(ARG_ALIMENTOS);
             View rootView = inflater.inflate(R.layout.fragment_main2, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            final int mesSeleccionado = getArguments().getInt(ARG_SECTION_NUMBER);
 
-            ArrayList<Alimento> alimentos = (ArrayList<Alimento>)getArguments().getSerializable(ARG_ALIMENTOS);
+            GridView gridview = (GridView) rootView.findViewById(R.id.gridview2);
+            /*gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                    Intent intent = new Intent(getContext(), Main2Activity.class);
+                    intent.putExtra(EXTRA_ALIMENTO_SELECCIONADO, alimentos.get(position));
+                    intent.putExtra(EXTRA_MES_SELECCIONADO, mesSeleccionado);
+                    startActivity(intent);
+                }
+            });*/
+
+            gridview.setAdapter(new ListaAlimentos(getActivity(), alimentos, mesSeleccionado));
 
             return rootView;
         }
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+
+        ArrayList<Alimento> alimentos = new ArrayList<Alimento>();
+
+        public SectionsPagerAdapter(FragmentManager fm, ArrayList<Alimento> alimentos) {
             super(fm);
+            this.alimentos = alimentos;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return PlaceholderFragment.newInstance(position + 1, null);
+            ordenarAlimentos(position + 1);
+            return PlaceholderFragment.newInstance(position + 1, this.alimentos);
         }
 
         @Override
         public int getCount() {
             return 12;
+        }
+
+        /**
+         * Ordena la lista de alimentos en función de la calidad para el mes seleccionado y el nombre del alimento.
+         */
+        private void ordenarAlimentos(int mes) {
+            System.out.println("*** MAIN2: ORDENAR POR MES " + mes);
+            Comparator<Alimento> comparador = Alimento.getComparator(mes);
+            Collections.sort(this.alimentos, comparador);
         }
     }
 }
