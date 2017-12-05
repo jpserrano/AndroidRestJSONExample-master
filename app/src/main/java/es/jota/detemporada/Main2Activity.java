@@ -146,10 +146,7 @@ public class Main2Activity extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
+
         private static final String ARG_SECTION_NUMBER = "section_number";
         private static final String ARG_ALIMENTOS = "alimentos";
 
@@ -172,10 +169,12 @@ public class Main2Activity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             final ArrayList<Alimento> alimentos = (ArrayList<Alimento>)getArguments().getSerializable(ARG_ALIMENTOS);
-            View rootView = inflater.inflate(R.layout.fragment_main2, container, false);
             final int mesSeleccionado = getArguments().getInt(ARG_SECTION_NUMBER);
 
+            View rootView = inflater.inflate(R.layout.fragment_main2, container, false);
             GridView gridview = (GridView) rootView.findViewById(R.id.gridview2);
+            gridview.setAdapter(new ListaAlimentos(getActivity(), alimentos, mesSeleccionado));
+
             /*gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                     Intent intent = new Intent(getContext(), Main2Activity.class);
@@ -185,8 +184,6 @@ public class Main2Activity extends AppCompatActivity {
                 }
             });*/
 
-            gridview.setAdapter(new ListaAlimentos(getActivity(), alimentos, mesSeleccionado));
-
             return rootView;
         }
     }
@@ -194,7 +191,7 @@ public class Main2Activity extends AppCompatActivity {
 
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
-        ArrayList<Alimento> alimentos = new ArrayList<Alimento>();
+        ArrayList<Alimento> alimentos = new ArrayList<>();
 
         public SectionsPagerAdapter(FragmentManager fm, ArrayList<Alimento> alimentos) {
             super(fm);
@@ -216,7 +213,6 @@ public class Main2Activity extends AppCompatActivity {
          * Ordena la lista de alimentos en función de la calidad para el mes seleccionado y el nombre del alimento.
          */
         private void ordenarAlimentos(int mes) {
-            System.out.println("*** MAIN2: ORDENAR POR MES " + mes);
             Comparator<Alimento> comparador = Alimento.getComparator(mes);
             Collections.sort(this.alimentos, comparador);
         }
