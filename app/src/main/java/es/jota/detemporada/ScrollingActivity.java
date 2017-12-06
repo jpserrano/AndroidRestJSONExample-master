@@ -8,9 +8,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -116,6 +118,7 @@ public class ScrollingActivity extends AppCompatActivity {
                         alimentoGlobal = document.toObject(AlimentoGlobal.class);
                         establecerDatosEnVista();
                     } else {
+                        ocultarPanelNutricional();
                         Log.w(TAG, "obtenerDatosGlobalesAlimento: el documento asociado a '" + alimentoSeleccionado.getNombre() + "' es nulo");
                     }
                 } else {
@@ -136,6 +139,11 @@ public class ScrollingActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.valor_proteinas)).setText(String.valueOf(alimentoGlobal.getProteinas()) + " gr");
             ((TextView) findViewById(R.id.valor_grasas)).setText(String.valueOf(alimentoGlobal.getGrasas()) + " gr");
         }
+    }
+
+    private void ocultarPanelNutricional() {
+        RelativeLayout panelNutricional = (RelativeLayout) findViewById(R.id.panel_nutricional);
+        panelNutricional.setVisibility(View.GONE);
     }
 
     /**
