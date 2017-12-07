@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">De Temporada</string>
 
+    <!-- Categorías -->
+    <string name="categoria_11">Imprescindibles del mes</string>
+    <string name="categoria_10">De temporada</string>
+    <string name="categoria_5">Recolección temprana/tardía</string>
+    <string name="categoria_0">Fuera de temporada</string>
+
     <!-- Meses -->
     <string name="mes_1">Enero</string>
     <string name="mes_2">Febrero</string>

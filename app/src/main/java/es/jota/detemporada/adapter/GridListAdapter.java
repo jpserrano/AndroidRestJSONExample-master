@@ -19,15 +19,11 @@ import es.jota.detemporada.view.Holder;
 
 import java.util.List;
 
-/**
- * @author Filippo Ash
- * @version 1.0.0
- * @date 11/7/2015
- */
+
 public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
     private static final String TAG = GridListAdapter.class.getName();
-    public static final String EXTRA_ALIMENTO_SELECCIONADO = "es.jota.detemporada.ALIMENTOSELECCIONADO";
+    private static final String EXTRA_ALIMENTO_SELECCIONADO = "es.jota.detemporada.ALIMENTOSELECCIONADO";
 
     private final int mDefaultSpanCount;
     private List<Item> mItemList;
@@ -44,7 +40,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
     }
 
     private boolean isHeaderType(int position) {
-        return mItemList.get(position).getItemType() == Item.HEADER_ITEM_TYPE ? true : false;
+        return mItemList.get(position).getItemType() == Item.HEADER_ITEM_TYPE;
     }
 
     @Override

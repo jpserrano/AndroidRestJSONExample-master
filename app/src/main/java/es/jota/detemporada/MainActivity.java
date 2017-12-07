@@ -177,39 +177,34 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private void cargarAlimentosAdapter(ArrayList<Alimento> alimentos, int mes) {
-            // TODO que no repita el bucle para los distintos tipos, que los vaya metiendo de uno en uno
+            int categoria = 0;
+            int posicionMes = mes - 1;
 
-            // TODO que el título de las secciones lo pille del strings
-            mAdapter.addItem(new HeaderItem("De temporada"));
-            mGridCounter = 0;
             for(Alimento alimento : alimentos) {
-                if(alimento.getCalidades().get(mes - 1) == 10) {
-                    mAdapter.addItem(new GridItem(alimento, mGridCounter));
-                    mGridCounter++;
+                if(alimento.getCalidades().get(posicionMes) == 11) {
+                    if(categoria != 11) {
+                        mAdapter.addItem(new HeaderItem(getResources().getString(R.string.categoria_11)));
+                        categoria = 11;
+                    }
+                } else if(alimento.getCalidades().get(posicionMes) == 10) {
+                    if(categoria != 10) {
+                        mAdapter.addItem(new HeaderItem(getResources().getString(R.string.categoria_10)));
+                        categoria = 10;
+                    }
+                } else if(alimento.getCalidades().get(posicionMes) == 5) {
+                    if(categoria != 5) {
+                        mAdapter.addItem(new HeaderItem(getResources().getString(R.string.categoria_5)));
+                        categoria = 5;
+                    }
+                } else {
+                    if(categoria != 0) {
+                        mAdapter.addItem(new HeaderItem(getResources().getString(R.string.categoria_0)));
+                        categoria = 0;
+                    }
                 }
-            }
 
-            mAdapter.addItem(new HeaderItem("No va mal"));
-            mGridCounter = 0;
-            for(Alimento alimento : alimentos) {
-                if(alimento.getCalidades().get(mes - 1) == 5) {
-                    mAdapter.addItem(new GridItem(alimento, mGridCounter));
-                    mGridCounter++;
-                }
+                mAdapter.addItem(new GridItem(alimento));
             }
-
-            mAdapter.addItem(new HeaderItem("De mierder"));
-            mGridCounter = 0;
-            for(Alimento alimento : alimentos) {
-                if(alimento.getCalidades().get(mes - 1) == 0) {
-                    mAdapter.addItem(new GridItem(alimento, mGridCounter));
-                    mGridCounter++;
-                }
-            }
-        }
-
-        public int getGridCounter() {
-            return ++mGridCounter;
         }
     }
 
@@ -218,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
         private final ArrayList<Alimento> alimentosAdapter;
 
-        public SectionsPagerAdapter(FragmentManager fm, ArrayList<Alimento> alimentos) {
+        private SectionsPagerAdapter(FragmentManager fm, ArrayList<Alimento> alimentos) {
             super(fm);
             alimentosAdapter = alimentos;
         }
