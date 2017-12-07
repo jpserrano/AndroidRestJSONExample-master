@@ -2,29 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
     style="@style/card">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imagen_alimento_pequenya"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true" />
 
     <TextView
-        android:id="@+id/textViewNombre"
+        android:id="@+id/gridTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/nombreAlimento" />
-
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:numStars="5"
-        android:stepSize="0.5"
-        android:isIndicator="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Widget.AppCompat.RatingBar.Small" />
 
 </LinearLayout>

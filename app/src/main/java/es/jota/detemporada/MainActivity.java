@@ -1,10 +1,11 @@
 package es.jota.detemporada;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -16,8 +17,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,9 +31,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
-import es.jota.detemporada.es.jota.detemporada.dominio.Alimento;
+import es.jota.detemporada.adapter.GridListAdapter;
+import es.jota.detemporada.dominio.Alimento;
+import es.jota.detemporada.dominio.GridItem;
+import es.jota.detemporada.dominio.HeaderItem;
+import es.jota.detemporada.dominio.Item;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -129,6 +133,12 @@ public class MainActivity extends AppCompatActivity {
         private static final String ARG_SECTION_NUMBER = "section_number";
         private static final String ARG_ALIMENTOS = "alimentos";
 
+        private static final int DEFAULT_SPAN_COUNT = 2;
+        private RecyclerView mRecyclerView;
+        private GridListAdapter mAdapter;
+        private List<Item> mItemList = new ArrayList<>();
+        private int mGridCounter;
+
         public PlaceholderFragment() { }
 
         /**
@@ -149,22 +159,57 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             final ArrayList<Alimento> alimentos = (ArrayList<Alimento>)getArguments().getSerializable(ARG_ALIMENTOS);
             final int mesSeleccionado = getArguments().getInt(ARG_SECTION_NUMBER);
-            final ListaAlimentos listaAlimentos = new ListaAlimentos(getActivity(), alimentos, mesSeleccionado);
 
             View rootView = inflater.inflate(R.layout.fragment_alimentos, container, false);
-            GridView gridview = (GridView) rootView.findViewById(R.id.gridview);
-            gridview.setAdapter(listaAlimentos);
+            mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewList);
+            mRecyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
+            mRecyclerView.setHasFixedSize(true);
 
-            gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    Intent intent = new Intent(getContext(), ScrollingActivity.class);
-                    intent.putExtra(EXTRA_ALIMENTO_SELECCIONADO, alimentos.get(position));
-                    intent.putExtra(EXTRA_MES_SELECCIONADO, mesSeleccionado);
-                    startActivity(intent);
-                }
-            });
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), DEFAULT_SPAN_COUNT);
+
+            mRecyclerView.setLayoutManager(gridLayoutManager);
+            mAdapter = new GridListAdapter(mItemList, gridLayoutManager, DEFAULT_SPAN_COUNT);
+            mRecyclerView.setAdapter(mAdapter);
+
+            cargarAlimentosAdapter(alimentos, mesSeleccionado);
 
             return rootView;
+        }
+
+        private void cargarAlimentosAdapter(ArrayList<Alimento> alimentos, int mes) {
+            // TODO que no repita el bucle para los distintos tipos, que los vaya metiendo de uno en uno
+
+            // TODO que el título de las secciones lo pille del strings
+            mAdapter.addItem(new HeaderItem("De temporada"));
+            mGridCounter = 0;
+            for(Alimento alimento : alimentos) {
+                if(alimento.getCalidades().get(mes - 1) == 10) {
+                    mAdapter.addItem(new GridItem(alimento, mGridCounter));
+                    mGridCounter++;
+                }
+            }
+
+            mAdapter.addItem(new HeaderItem("No va mal"));
+            mGridCounter = 0;
+            for(Alimento alimento : alimentos) {
+                if(alimento.getCalidades().get(mes - 1) == 5) {
+                    mAdapter.addItem(new GridItem(alimento, mGridCounter));
+                    mGridCounter++;
+                }
+            }
+
+            mAdapter.addItem(new HeaderItem("De mierder"));
+            mGridCounter = 0;
+            for(Alimento alimento : alimentos) {
+                if(alimento.getCalidades().get(mes - 1) == 0) {
+                    mAdapter.addItem(new GridItem(alimento, mGridCounter));
+                    mGridCounter++;
+                }
+            }
+        }
+
+        public int getGridCounter() {
+            return ++mGridCounter;
         }
     }
 
@@ -182,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             ordenarAlimentos(position + 1);
             ArrayList<Alimento> alimentosTemp = (ArrayList<Alimento>)alimentosAdapter.clone();
-
             return PlaceholderFragment.newInstance(position + 1, alimentosTemp);
         }
 

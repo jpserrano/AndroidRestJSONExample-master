@@ -31,8 +31,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.jota.detemporada.es.jota.detemporada.dominio.Alimento;
-import es.jota.detemporada.es.jota.detemporada.dominio.AlimentoGlobal;
+import es.jota.detemporada.dominio.Alimento;
+import es.jota.detemporada.dominio.AlimentoGlobal;
 
 import static es.jota.detemporada.MainActivity.EXTRA_ALIMENTO_SELECCIONADO;
 import static es.jota.detemporada.MainActivity.EXTRA_MES_SELECCIONADO;
@@ -41,7 +41,6 @@ public class ScrollingActivity extends AppCompatActivity {
 
     private static final String TAG = ScrollingActivity.class.getName();
 
-    private int mesSeleccionado;
     private Alimento alimentoSeleccionado;
     private AlimentoGlobal alimentoGlobal;
 
@@ -74,8 +73,6 @@ public class ScrollingActivity extends AppCompatActivity {
     private void recuperarDatosMainActivity() {
         Intent intent = getIntent();
         alimentoSeleccionado = (Alimento) intent.getSerializableExtra(EXTRA_ALIMENTO_SELECCIONADO);
-        // TODO El mes seleccionado se usará para marcarlo en el panel de calidades por mes
-        mesSeleccionado = intent.getIntExtra(EXTRA_MES_SELECCIONADO, 1);
     }
 
     /**

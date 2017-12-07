@@ -1,4 +1,4 @@
-package es.jota.detemporada.es.jota.detemporada.dominio;
+package es.jota.detemporada.dominio;
 
 import java.io.Serializable;
 import java.util.ArrayList;

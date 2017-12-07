@@ -10,11 +10,11 @@
     <style name="card">
         <item name="android:background">@android:color/white</item>
         <item name="android:padding">8dp</item>
+        <item name="android:layout_margin">4dp</item>
     </style>
 
     <style name="nombreAlimento">
         <item name="colorPrimary">#333</item>
-        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="textoPropiedadAlimento">

@@ -1,4 +1,4 @@
-package es.jota.detemporada.es.jota.detemporada.dominio;
+package es.jota.detemporada.dominio;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -8,8 +8,6 @@ public class Alimento implements Serializable {
 
     private String nombre;
     private List<Long> calidades;
-
-    public Alimento() {}
 
     public static Comparator<Alimento> getComparator(int mesComparacion) {
         return new AlimentoComparator(mesComparacion);
