@@ -2,6 +2,7 @@ package es.jota.detemporada;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -80,17 +81,18 @@ public class ScrollingActivity extends AppCompatActivity {
      */
     private void establecerDatosToolbar() {
         // Si en el strings no está definido el nombre del alimento mostramos el nombre desde el objeto en BD
-        int recursoNombre = getResources().getIdentifier(alimentoSeleccionado.getNombre(), "string", getPackageName());
-        if(recursoNombre == 0) {
-            setTitle(alimentoSeleccionado.getNombre());
-            Log.w(TAG, "onCreate: el alimento '" + alimentoSeleccionado.getNombre() + "' no está definido en el fichero string");
+        /*int recursoNombre = getResources().getIdentifier(alimentoSeleccionado.getNombre(), "string", getPackageName());
+        if(recursoNombre == 0) {*/
+            setTitle(alimentoSeleccionado.getNombreTraducido());
+            /*Log.w(TAG, "onCreate: el alimento '" + alimentoSeleccionado.getNombre() + "' no está definido en el fichero string");
         } else {
             setTitle(recursoNombre);
-        }
+        }*/
 
         // Si no existe la imagen del alimento mostramos una imagen genérica para que la interfaz no se descuadre
         int recursoImagen = getResources().getIdentifier("img_" + alimentoSeleccionado.getNombre(), "drawable", getPackageName());
         ImageView imagenBackground = (ImageView) findViewById(R.id.img_background);
+        imagenBackground.setContentDescription(alimentoSeleccionado.getNombre());
         if(recursoImagen == 0) {
             imagenBackground.setBackgroundResource(R.drawable.img_no_foto);
             Log.w(TAG, "onCreate: el alimento '" + alimentoSeleccionado.getNombre() + "' no tiene la imagen asociada");

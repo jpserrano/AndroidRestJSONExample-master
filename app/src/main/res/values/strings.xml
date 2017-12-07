@@ -1,64 +1,62 @@
 <resources>
     <string name="app_name">De Temporada</string>
+    <string name="title_activity_scrolling">Scrolling</string>
 
     <!-- Categorías -->
-    <string name="categoria_11">Imprescindibles del mes</string>
-    <string name="categoria_10">De temporada</string>
-    <string name="categoria_5">Recolección temprana/tardía</string>
-    <string name="categoria_0">Fuera de temporada</string>
+    <string name="categoria_11">Top this month</string>
+    <string name="categoria_10">At its best</string>
+    <string name="categoria_5">Coming in</string>
+    <string name="categoria_0">Out of season</string>
 
     <!-- Meses -->
-    <string name="mes_1">Enero</string>
-    <string name="mes_2">Febrero</string>
-    <string name="mes_3">Marzo</string>
-    <string name="mes_4">Abril</string>
-    <string name="mes_5">Mayo</string>
-    <string name="mes_6">Junio</string>
-    <string name="mes_7">Julio</string>
-    <string name="mes_8">Agosto</string>
-    <string name="mes_9">Septiembre</string>
-    <string name="mes_10">Octubre</string>
-    <string name="mes_11">Noviembre</string>
-    <string name="mes_12">Diciembre</string>
+    <string name="mes_1">January</string>
+    <string name="mes_2">February</string>
+    <string name="mes_3">March</string>
+    <string name="mes_4">April</string>
+    <string name="mes_5">May</string>
+    <string name="mes_6">June</string>
+    <string name="mes_7">July</string>
+    <string name="mes_8">August</string>
+    <string name="mes_9">September</string>
+    <string name="mes_10">October</string>
+    <string name="mes_11">November</string>
+    <string name="mes_12">December</string>
 
-    <string name="mes_corto_1">Ene</string>
+    <string name="mes_corto_1">Jan</string>
     <string name="mes_corto_2">Feb</string>
     <string name="mes_corto_3">Mar</string>
-    <string name="mes_corto_4">Abr</string>
+    <string name="mes_corto_4">Apr</string>
     <string name="mes_corto_5">May</string>
     <string name="mes_corto_6">Jun</string>
     <string name="mes_corto_7">Jul</string>
-    <string name="mes_corto_8">Ago</string>
+    <string name="mes_corto_8">Aug</string>
     <string name="mes_corto_9">Sep</string>
     <string name="mes_corto_10">Oct</string>
     <string name="mes_corto_11">Nov</string>
-    <string name="mes_corto_12">Dic</string>
+    <string name="mes_corto_12">Dec</string>
 
     <!-- Alimentos -->
-    <string name="acelga">Acelga</string>
-    <string name="aguacate">Aguacate</string>
-    <string name="batata">Batata</string>
-    <string name="brocoli">Brocoli</string>
-    <string name="cardo">Cardo</string>
-    <string name="champiñon">Champiñón</string>
+    <string name="acelga">Chard</string>
+    <string name="aguacate">Avocado</string>
+    <string name="batata">Sweet potato</string>
+    <string name="brocoli">Broccoli</string>
+    <string name="cardo">Thistle</string>
+    <string name="champiñon">Mushroom</string>
     <string name="kiwi">Kiwi</string>
-    <string name="lima">Lima</string>
-    <string name="limon">Limón</string>
-    <string name="mandarina">Mandarina</string>
-    <string name="manzana">Manzana</string>
-    <string name="naranja">Naranja</string>
-    <string name="pera">Pera</string>
+    <string name="lima">Lime</string>
+    <string name="limon">Lemon</string>
+    <string name="mandarina">Tangerine</string>
+    <string name="manzana">Apple</string>
+    <string name="naranja">Orange</string>
+    <string name="pera">Pear</string>
 
     <!-- Propiedades del alimento -->
-    <string name="title_activity_scrolling">ScrollingActivity</string>
-    <string name="calorias">Calorías</string>
-    <string name="carbohidratos">Carbohidratos</string>
-    <string name="proteinas">Proteínas</string>
-    <string name="grasas">Grasas</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="imagen_alimento">Food image</string>
+    <string name="calorias">Calories</string>
+    <string name="carbohidratos">Carbs</string>
+    <string name="proteinas">Proteins</string>
+    <string name="grasas">Fats</string>
 
-    <string name="navigation_drawer_open">Abrir menú lateral</string>
-    <string name="navigation_drawer_close">Cerrar menú lateral</string>
+    <string name="navigation_drawer_open">Open navigation</string>
+    <string name="navigation_drawer_close">Close navigation</string>
 </resources>

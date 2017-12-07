@@ -1,6 +1,7 @@
 package es.jota.detemporada;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -80,9 +81,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()) {
                     ArrayList<Alimento> alimentos = new ArrayList<>();
+                    Alimento alimento;
+                    int recursoNombre;
 
                     for(DocumentSnapshot documentoAlimento : task.getResult()) {
-                        alimentos.add(documentoAlimento.toObject(Alimento.class));
+                        alimento = documentoAlimento.toObject(Alimento.class);
+
+                        // Establecemos el nombre del alimento en el idioma seleccionado
+                        // para que la ordenación se aplique correctamente
+                        recursoNombre = getResources().getIdentifier(alimento.getNombre(), "string", getPackageName());
+                        if(recursoNombre != 0) {
+                            alimento.setNombreTraducido(getResources().getString(recursoNombre));
+                        } else {
+                            alimento.setNombreTraducido(alimento.getNombre());
+                            Log.w(TAG, "onCreate: el alimento '" + alimento.getNombre() + "' no está definido en el fichero string");
+                        }
+
+                        alimentos.add(alimento);
                     }
 
                     // Lo hacemos una vez se han obtenido los alimentos

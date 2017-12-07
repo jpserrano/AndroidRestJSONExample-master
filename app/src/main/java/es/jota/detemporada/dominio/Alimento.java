@@ -8,6 +8,7 @@ public class Alimento implements Serializable {
 
     private String nombre;
     private List<Long> calidades;
+    private String nombreTraducido;
 
     public static Comparator<Alimento> getComparator(int mesComparacion) {
         return new AlimentoComparator(mesComparacion);
@@ -33,7 +34,7 @@ public class Alimento implements Serializable {
             int comparacion = Long.valueOf(a2.getCalidades().get(mesComparacion - 1) - a1.getCalidades().get(mesComparacion - 1)).intValue();
 
             if(comparacion == 0) {
-                comparacion = a1.getNombre().compareTo(a2.getNombre());
+                comparacion = a1.getNombreTraducido().compareToIgnoreCase(a2.getNombreTraducido());
             }
 
             return comparacion;
@@ -47,4 +48,7 @@ public class Alimento implements Serializable {
 
     public List<Long> getCalidades() { return calidades; }
     public void setCalidades(List<Long> calidades) { this.calidades = calidades; }
+
+    public String getNombreTraducido() { return nombreTraducido; }
+    public void setNombreTraducido(String nombreTraducido) { this.nombreTraducido = nombreTraducido; }
 }
