@@ -82,7 +82,7 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
         // Si en el strings no está definido el nombre del alimento mostramos el nombre desde el objeto en BD
         TextView title = (TextView) container.findViewById(R.id.gridTitle);
-        int recursoNombre = container.getResources().getIdentifier(nombreAlimento, "string", container.getContext().getPackageName());
+        int recursoNombre = container.getResources().getIdentifier("alim_" + nombreAlimento, "string", container.getContext().getPackageName());
         if (recursoNombre == 0) {
             title.setText(nombreAlimento);
             Log.w(TAG, "getView: el alimento '" + nombreAlimento + "' no está definido en el fichero string");

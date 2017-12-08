@@ -36,19 +36,19 @@
     <string name="mes_corto_12">Dec</string>
 
     <!-- Alimentos -->
-    <string name="acelga">Chard</string>
-    <string name="aguacate">Avocado</string>
-    <string name="batata">Sweet potato</string>
-    <string name="brocoli">Broccoli</string>
-    <string name="cardo">Thistle</string>
-    <string name="champiñon">Mushroom</string>
-    <string name="kiwi">Kiwi</string>
-    <string name="lima">Lime</string>
-    <string name="limon">Lemon</string>
-    <string name="mandarina">Tangerine</string>
-    <string name="manzana">Apple</string>
-    <string name="naranja">Orange</string>
-    <string name="pera">Pear</string>
+    <string name="alim_acelga">Chard</string>
+    <string name="alim_aguacate">Avocado</string>
+    <string name="alim_batata">Sweet potato</string>
+    <string name="alim_brocoli">Broccoli</string>
+    <string name="alim_cardo">Thistle</string>
+    <string name="alim_champiñon">Mushroom</string>
+    <string name="alim_kiwi">Kiwi</string>
+    <string name="alim_lima">Lime</string>
+    <string name="alim_limon">Lemon</string>
+    <string name="alim_mandarina">Tangerine</string>
+    <string name="alim_manzana">Apple</string>
+    <string name="alim_naranja">Orange</string>
+    <string name="alim_pera">Pear</string>
 
     <!-- Propiedades del alimento -->
     <string name="imagen_alimento">Food image</string>
@@ -59,4 +59,16 @@
 
     <string name="navigation_drawer_open">Open navigation</string>
     <string name="navigation_drawer_close">Close navigation</string>
+
+    <!-- Settings -->
+    <string name="title_activity_settings">Settings</string>
+    <string name="idioma">Language</string>
+    <string-array name="pref_example_list_titles">
+        <item>Español</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>es</item>
+        <item>en</item>
+    </string-array>
 </resources>

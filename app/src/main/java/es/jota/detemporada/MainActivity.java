@@ -1,7 +1,7 @@
 package es.jota.detemporada;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         // Establecemos el nombre del alimento en el idioma seleccionado
                         // para que la ordenación se aplique correctamente
-                        recursoNombre = getResources().getIdentifier(alimento.getNombre(), "string", getPackageName());
+                        recursoNombre = getResources().getIdentifier("alim_" + alimento.getNombre(), "string", getPackageName());
                         if(recursoNombre != 0) {
                             alimento.setNombreTraducido(getResources().getString(recursoNombre));
                         } else {
@@ -144,8 +144,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
-
+        } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

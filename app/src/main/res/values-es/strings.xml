@@ -36,19 +36,19 @@
     <string name="mes_corto_12">Dic</string>
 
     <!-- Alimentos -->
-    <string name="acelga">Acelga</string>
-    <string name="aguacate">Aguacate</string>
-    <string name="batata">Batata</string>
-    <string name="brocoli">Brocoli</string>
-    <string name="cardo">Cardo</string>
-    <string name="champiñon">Champiñón</string>
-    <string name="kiwi">Kiwi</string>
-    <string name="lima">Lima</string>
-    <string name="limon">Limón</string>
-    <string name="mandarina">Mandarina</string>
-    <string name="manzana">Manzana</string>
-    <string name="naranja">Naranja</string>
-    <string name="pera">Pera</string>
+    <string name="alim_acelga">Acelga</string>
+    <string name="alim_aguacate">Aguacate</string>
+    <string name="alim_batata">Batata</string>
+    <string name="alim_brocoli">Brocoli</string>
+    <string name="alim_cardo">Cardo</string>
+    <string name="alim_champiñon">Champiñón</string>
+    <string name="alim_kiwi">Kiwi</string>
+    <string name="alim_lima">Lima</string>
+    <string name="alim_limon">Limón</string>
+    <string name="alim_mandarina">Mandarina</string>
+    <string name="alim_manzana">Manzana</string>
+    <string name="alim_naranja">Naranja</string>
+    <string name="alim_pera">Pera</string>
 
     <!-- Propiedades del alimento -->
     <string name="imagen_alimento">Imagen alimento</string>
@@ -59,4 +59,16 @@
 
     <string name="navigation_drawer_open">Abrir menú lateral</string>
     <string name="navigation_drawer_close">Cerrar menú lateral</string>
+
+    <!-- Settings -->
+    <string name="title_activity_settings">Configuración</string>
+    <string name="idioma">Idioma</string>
+    <string-array name="pref_example_list_titles">
+        <item>Español</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>es</item>
+        <item>en</item>
+    </string-array>
 </resources>

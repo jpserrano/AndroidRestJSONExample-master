@@ -80,14 +80,7 @@ public class ScrollingActivity extends AppCompatActivity {
      * Establece el título y la imagen de fondo del toolbar.
      */
     private void establecerDatosToolbar() {
-        // Si en el strings no está definido el nombre del alimento mostramos el nombre desde el objeto en BD
-        /*int recursoNombre = getResources().getIdentifier(alimentoSeleccionado.getNombre(), "string", getPackageName());
-        if(recursoNombre == 0) {*/
-            setTitle(alimentoSeleccionado.getNombreTraducido());
-            /*Log.w(TAG, "onCreate: el alimento '" + alimentoSeleccionado.getNombre() + "' no está definido en el fichero string");
-        } else {
-            setTitle(recursoNombre);
-        }*/
+        setTitle(alimentoSeleccionado.getNombreTraducido());
 
         // Si no existe la imagen del alimento mostramos una imagen genérica para que la interfaz no se descuadre
         int recursoImagen = getResources().getIdentifier("img_" + alimentoSeleccionado.getNombre(), "drawable", getPackageName());
