@@ -1,6 +1,7 @@
 package es.jota.detemporada;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -144,13 +145,27 @@ public class ScrollingActivity extends AppCompatActivity {
     private void mostrarGraficoCalidades() {
         List<BarEntry> calidades = new ArrayList<>();
         float ejeX = 0;
+        int[] listaColores = new int[12];
 
         for(Long ejeY : alimentoSeleccionado.getCalidades()) {
+            // Ponemos un 1 para que aparezcan valores en la gráfica
+            // Si pasa de 10 lo ponemos a 10 para igualar máximos
+            if(ejeY == 0) {
+                ejeY = 1L;
+                listaColores[(int)ejeX] = R.color.calidad_0;
+            } else if(ejeY >= 10) {
+                ejeY = 10L;
+                listaColores[(int)ejeX] = R.color.calidad_10;
+            } else {
+                listaColores[(int)ejeX] = R.color.calidad_5;
+            }
+
             calidades.add(new BarEntry(ejeX, ejeY));
             ejeX++;
         }
 
         BarDataSet dataSet = new BarDataSet(calidades, "Calidades");
+        dataSet.setColors(listaColores, this);
         BarData barData = new BarData(dataSet);
         BarChart barChart = (BarChart) findViewById(R.id.chart);
         barChart.setData(barData);
@@ -174,11 +189,12 @@ public class ScrollingActivity extends AppCompatActivity {
         barChart.getAxisRight().setEnabled(false);
 
         // Elimina el grid posterior al gráfico
-        //barChart.getXAxis().setEnabled(false);
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.getAxisRight().setDrawGridLines(false);
         barChart.getAxisRight().setDrawAxisLine(false);
         barChart.getAxisLeft().setDrawAxisLine(false);
+
+        barChart.animateY(2000);
 
         barChart.getData().setDrawValues(false);
 
@@ -194,9 +210,5 @@ public class ScrollingActivity extends AppCompatActivity {
                 return getResources().getString(recursoNombre);
             }
         });
-
-
-
-
     }
 }

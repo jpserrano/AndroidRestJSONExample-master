@@ -2,6 +2,10 @@
     <string name="app_name">De Temporada</string>
     <string name="title_activity_scrolling">Scrolling</string>
 
+    <!-- Títulos -->
+    <string name="titulo_valores_nutricionales">Información nutricional</string>
+    <string name="titulo_calidades_por_mes">Calidades por mes</string>
+
     <!-- Categorías -->
     <string name="categoria_11">Imprescindibles del mes</string>
     <string name="categoria_10">De temporada</string>

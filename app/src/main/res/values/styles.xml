@@ -13,6 +13,14 @@
         <item name="android:layout_margin">4dp</item>
     </style>
 
+    <style name="titulo">
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
     <style name="nombreAlimento">
         <item name="colorPrimary">#333</item>
     </style>

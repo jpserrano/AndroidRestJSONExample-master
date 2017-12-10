@@ -6,4 +6,9 @@
     <color name="colorAccent">#a98274</color>
 
     <color name="background">#EBEBEB</color>
+
+    <!-- Colores por calidad -->
+    <color name="calidad_0">#E57373</color>
+    <color name="calidad_5">#FFB74D</color>
+    <color name="calidad_10">#81C784</color>
 </resources>
