@@ -55,7 +55,7 @@
     <string name="alim_pera">Pear</string>
 
     <!-- Propiedades del alimento -->
-    <string name="imagen_alimento">Food image</string>
+    <string name="imagen_alimento">Product image</string>
     <string name="calorias">Calories</string>
     <string name="carbohidratos">Carbs</string>
     <string name="proteinas">Proteins</string>

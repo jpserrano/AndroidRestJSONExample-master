@@ -21,10 +21,6 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="nombreAlimento">
-        <item name="colorPrimary">#333</item>
-    </style>
-
     <style name="textoPropiedadAlimento">
         <item name="android:textAllCaps">true</item>
         <item name="android:paddingTop">16dp</item>

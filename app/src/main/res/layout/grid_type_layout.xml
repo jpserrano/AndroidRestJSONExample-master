@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:orientation="vertical"
     style="@style/card">
 
@@ -10,12 +9,12 @@
         android:id="@+id/imagen_alimento_pequenya"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/imagen_alimento"
         android:adjustViewBounds="true" />
 
     <TextView
         android:id="@+id/gridTitle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/nombreAlimento" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
