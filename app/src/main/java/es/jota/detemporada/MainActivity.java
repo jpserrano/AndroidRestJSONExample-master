@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
 
-                mAdapter.addItem(new GridItem(alimento));
+                mAdapter.addItem(new GridItem(alimento, alimento.getCalidades().get(posicionMes)));
             }
         }
     }

@@ -3,8 +3,8 @@ package es.jota.detemporada.dominio;
 
 public class GridItem extends Item {
 
-    public GridItem(Alimento alimento) {
-        super(alimento.getNombre(), alimento);
+    public GridItem(Alimento alimento, Long calidadMes) {
+        super(alimento.getNombre(), alimento, calidadMes);
     }
 
     @Override

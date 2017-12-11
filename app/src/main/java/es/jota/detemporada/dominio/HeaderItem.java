@@ -1,14 +1,11 @@
 package es.jota.detemporada.dominio;
 
-/**
- * @author Filippo Ash
- * @version 1.0.0
- * @date 11/7/2015
- */
+
 public class HeaderItem extends Item {
 
     public HeaderItem(String title) {
-        super(title, null);
+        // TODO buscar otra forma, que sea solo el title y pasar el alimento y la calidad por setters al GridItem
+        super(title, null, null);
     }
 
     @Override

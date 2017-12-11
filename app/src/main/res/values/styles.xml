@@ -7,15 +7,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="card">
-        <item name="android:background">@android:color/white</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:layout_margin">4dp</item>
-    </style>
-
     <style name="titulo">
         <item name="android:textStyle">bold</item>
-        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingStart">8dp</item>
         <item name="android:paddingEnd">0dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:singleLine">true</item>

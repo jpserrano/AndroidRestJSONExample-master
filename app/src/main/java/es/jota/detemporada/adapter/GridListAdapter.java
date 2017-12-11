@@ -66,12 +66,6 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
         }
     }
 
-    /**
-     * This method is used to bind grid item value
-     *
-     * @param holder
-     * @param position
-     */
     private void bindGridItem(Holder holder, int position) {
 
         final View container = holder.itemView;
@@ -90,7 +84,16 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
             title.setText(recursoNombre);
         }
 
-        title.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_circle, 0, 0, 0);
+        // Añadimos el círculo al lado del nombre del alimento
+        // con el color que le corresponde por la calidad que tiene en el mes seleccionado
+        int circuloCalidadAlimento = R.drawable.ic_circle_10;
+        if(item.getCalidadMes() == 0) {
+            circuloCalidadAlimento = R.drawable.ic_circle_0;
+        } else if(item.getCalidadMes() == 5) {
+            circuloCalidadAlimento = R.drawable.ic_circle_5;
+        }
+
+        title.setCompoundDrawablesRelativeWithIntrinsicBounds(circuloCalidadAlimento, 0, 0, 0);
         title.setCompoundDrawablePadding(8);
 
         // Si no existe la imagen del alimento mostramos una imagen genérica para que la interfaz no se descuadre
@@ -113,12 +116,6 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
         });
     }
 
-    /**
-     * This method is used to bind the header with the corresponding item position information
-     *
-     * @param holder
-     * @param position
-     */
     private void bindHeaderItem(Holder holder, int position) {
         TextView title = (TextView) holder.itemView.findViewById(R.id.headerTitle);
         title.setText(mItemList.get(position).getItemTitle());
@@ -134,23 +131,8 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
         return mItemList.size();
     }
 
-    /**
-     * This method is used to add an item into the recyclerview list
-     *
-     * @param item
-     */
     public void addItem(Item item) {
         mItemList.add(item);
-        notifyDataSetChanged();
-    }
-
-    /**
-     * This method is used to remove items from the list
-     *
-     * @param item {@link Item}
-     */
-    public void removeItem(Item item) {
-        mItemList.remove(item);
         notifyDataSetChanged();
     }
 }
