@@ -5,7 +5,7 @@
     <color name="colorPrimaryLight">#80e27e</color>
     <color name="colorAccent">#a98274</color>
 
-    <color name="background">#EBEBEB</color>
+    <color name="background">#EEEEEE</color>
 
     <!-- Colores por calidad -->
     <color name="calidad_0">#E57373</color>

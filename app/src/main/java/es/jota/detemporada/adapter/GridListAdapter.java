@@ -90,6 +90,9 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
             title.setText(recursoNombre);
         }
 
+        title.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_circle, 0, 0, 0);
+        title.setCompoundDrawablePadding(8);
+
         // Si no existe la imagen del alimento mostramos una imagen genérica para que la interfaz no se descuadre
         ImageView imageView = (ImageView) container.findViewById(R.id.imagen_alimento_pequenya);
         int recursoImagen = container.getResources().getIdentifier("img_" + nombreAlimento, "drawable", container.getContext().getPackageName());
