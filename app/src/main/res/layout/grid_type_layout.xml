@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_margin="8dp"
-    android:elevation="4dp"
-    android:background="@drawable/backg_sombra">
+    android:layout_margin="4dp"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="4dp">
 
-    <ImageView
-        android:id="@+id/imagen_alimento_pequenya"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/imagen_alimento"
-        android:adjustViewBounds="true" />
-
-    <TextView
-        android:id="@+id/gridTitle"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="4dp"
-        android:background="@android:color/white" />
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/imagen_alimento_pequenya"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/imagen_alimento"
+            android:adjustViewBounds="true" />
+
+        <TextView
+            android:id="@+id/gridTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"
+            android:layout_marginTop="-20dp"
+            android:background="@android:color/white"
+            android:layout_below="@id/imagen_alimento_pequenya"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
+
