@@ -63,10 +63,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Obtener el país del usuario
         TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-        String countryCodeValue;
+        String countryCodeValue = null;
         if (tm != null) {
             countryCodeValue = tm.getNetworkCountryIso().toUpperCase();
-        } else {
+        }
+
+        // Si no hemos podido obtener el país del usuario o el país no está entre los disponibles,
+        // mostramos un selector de paises disponibles para que elija el que quiera.
+        if (!"ES".equals(countryCodeValue)) {
             // TODO mostrar un selector de paises disponibles cuando haya más de un país
             countryCodeValue = "ES";
         }

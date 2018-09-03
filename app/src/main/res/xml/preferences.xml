@@ -3,10 +3,11 @@
 
     <ListPreference
         android:defaultValue="-1"
-        android:entries="@array/pref_example_list_titles"
-        android:entryValues="@array/pref_example_list_values"
+        android:entries="@array/pref_idiomas_list_titles"
+        android:entryValues="@array/pref_idiomas_list_values"
         android:key="example_list"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/idioma" />
+        android:title="@string/idioma"
+        />
 </PreferenceScreen>

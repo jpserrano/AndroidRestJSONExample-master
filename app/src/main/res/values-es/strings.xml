@@ -67,11 +67,11 @@
     <!-- Settings -->
     <string name="title_activity_settings">Configuración</string>
     <string name="idioma">Idioma</string>
-    <string-array name="pref_example_list_titles">
+    <string-array name="pref_idiomas_list_titles">
         <item>Español</item>
         <item>English</item>
     </string-array>
-    <string-array name="pref_example_list_values">
+    <string-array name="pref_idiomas_list_values">
         <item>es</item>
         <item>en</item>
     </string-array>
