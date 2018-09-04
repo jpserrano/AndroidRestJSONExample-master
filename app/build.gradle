@@ -34,6 +34,15 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:11.6.0'
     implementation 'com.google.firebase:firebase-firestore:11.6.0'
 
+    // Acceso a las imágenes en Firestore Storage
+    implementation 'com.google.firebase:firebase-storage:11.6.0'
+    implementation 'com.firebaseui:firebase-ui-storage:0.6.0'
+    // Glide, para la carga de imágenes desde Firestore Storage
+    implementation ("com.github.bumptech.glide:glide:3.8.0") {
+        exclude group: "com.android.support"
+    }
+    implementation "com.android.support:support-fragment:25.0.0"
+
     // Librería para mostrar charts
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 

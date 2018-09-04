@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -29,6 +31,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,15 +88,15 @@ public class ScrollingActivity extends AppCompatActivity {
         setTitle(alimentoSeleccionado.getNombreTraducido());
 
         // Si no existe la imagen del alimento mostramos una imagen genérica para que la interfaz no se descuadre
-        int recursoImagen = getResources().getIdentifier("img_" + alimentoSeleccionado.getNombre(), "drawable", getPackageName());
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://de-temporada.appspot.com/img/alimentos/" + alimentoSeleccionado.getNombre() + ".jpg");
+
+        // TODO Controlar el caso que la imagen no exista, mostrar una imagen predeterminada o no hacer nada, pero controlarlo
+
         ImageView imagenBackground = (ImageView) findViewById(R.id.img_background);
         imagenBackground.setContentDescription(alimentoSeleccionado.getNombre());
-        if(recursoImagen == 0) {
-            imagenBackground.setBackgroundResource(R.drawable.img_no_foto);
-            Log.w(TAG, "onCreate: el alimento '" + alimentoSeleccionado.getNombre() + "' no tiene la imagen asociada");
-        } else {
-            imagenBackground.setBackgroundResource(recursoImagen);
-        }
+
+        Glide.with(this).using(new FirebaseImageLoader()).load(storageReference).into(imagenBackground);
     }
 
     /**
