@@ -10,6 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import es.jota.detemporada.R;
 import es.jota.detemporada.ScrollingActivity;
 import es.jota.detemporada.dominio.Alimento;
@@ -96,15 +101,11 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
         title.setCompoundDrawablesRelativeWithIntrinsicBounds(circuloCalidadAlimento, 0, 0, 0);
         title.setCompoundDrawablePadding(8);
 
-        // Si no existe la imagen del alimento mostramos una imagen genérica para que la interfaz no se descuadre
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://de-temporada.appspot.com/img/alimentos/" + nombreAlimento + ".jpg");
+
         ImageView imageView = (ImageView) container.findViewById(R.id.imagen_alimento_pequenya);
-        int recursoImagen = container.getResources().getIdentifier("img_" + nombreAlimento, "drawable", container.getContext().getPackageName());
-        if(recursoImagen == 0) {
-            imageView.setImageResource(R.drawable.img_no_foto);
-            Log.w(TAG, "getView: el alimento '" + nombreAlimento + "' no tiene la imagen asociada");
-        } else {
-            imageView.setImageResource(recursoImagen);
-        }
+        Glide.with(container.getContext()).using(new FirebaseImageLoader()).load(storageReference).into(imageView);
 
         container.setOnClickListener(new View.OnClickListener() {
             @Override

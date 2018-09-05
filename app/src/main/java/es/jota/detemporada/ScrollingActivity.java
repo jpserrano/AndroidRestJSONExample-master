@@ -87,7 +87,6 @@ public class ScrollingActivity extends AppCompatActivity {
     private void establecerDatosToolbar() {
         setTitle(alimentoSeleccionado.getNombreTraducido());
 
-        // Si no existe la imagen del alimento mostramos una imagen genérica para que la interfaz no se descuadre
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl("gs://de-temporada.appspot.com/img/alimentos/" + alimentoSeleccionado.getNombre() + ".jpg");
 
