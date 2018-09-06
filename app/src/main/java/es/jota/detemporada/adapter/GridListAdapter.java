@@ -104,9 +104,9 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
 
         ImageView imageView = (ImageView) container.findViewById(R.id.imagen_alimento_pequenya);
 
-        // TODO Controlar el caso que la imagen no exista, mostrar una imagen predeterminada o no hacer nada, pero controlarlo
         Glide.with(container.getContext())
                 .load("https://de-temporada.firebaseapp.com/img/alimentos/" + nombreAlimento + ".jpg")
+                .error(R.drawable.img_no_encontrada)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
 

@@ -91,9 +91,9 @@ public class ScrollingActivity extends AppCompatActivity {
         ImageView imagenBackground = (ImageView) findViewById(R.id.img_background);
         imagenBackground.setContentDescription(alimentoSeleccionado.getNombre());
 
-        // TODO Controlar el caso que la imagen no exista, mostrar una imagen predeterminada o no hacer nada, pero controlarlo
         Glide.with(this)
                 .load("https://de-temporada.firebaseapp.com/img/alimentos/" + alimentoSeleccionado.getNombre() + ".jpg")
+                .error(R.drawable.img_no_encontrada)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imagenBackground);
     }
