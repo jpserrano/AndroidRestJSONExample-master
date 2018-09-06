@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -101,11 +102,13 @@ public class GridListAdapter extends RecyclerView.Adapter<Holder> {
         title.setCompoundDrawablesRelativeWithIntrinsicBounds(circuloCalidadAlimento, 0, 0, 0);
         title.setCompoundDrawablePadding(8);
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReferenceFromUrl("gs://de-temporada.appspot.com/img/alimentos/" + nombreAlimento + ".jpg");
-
         ImageView imageView = (ImageView) container.findViewById(R.id.imagen_alimento_pequenya);
-        Glide.with(container.getContext()).using(new FirebaseImageLoader()).load(storageReference).into(imageView);
+
+        // TODO Controlar el caso que la imagen no exista, mostrar una imagen predeterminada o no hacer nada, pero controlarlo
+        Glide.with(container.getContext())
+                .load("https://de-temporada.firebaseapp.com/img/alimentos/" + nombreAlimento + ".jpg")
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imageView);
 
         container.setOnClickListener(new View.OnClickListener() {
             @Override
